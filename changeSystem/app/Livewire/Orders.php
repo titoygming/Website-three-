@@ -86,7 +86,7 @@ class Orders extends Component
             'deviceId',
             'serviceId'
         ]);
-        $this->dialog()->success('Sucess', 'Your order is placed')->send();
+        $this->dialog()->success('Sucess', 'Your order has been placed')->send();
     }
 
 
