@@ -15,6 +15,7 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->string('name');
             $table->decimal('price');
+            $table->longText('image_url')->nullable();
             $table->string('image')->nullable();
             $table->longText('descriptions')->nullable();
             $table->timestamps();

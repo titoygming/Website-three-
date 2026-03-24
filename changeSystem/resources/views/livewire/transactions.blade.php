@@ -11,12 +11,12 @@
     </div>
 
     <x-ts-table :rows="$this->transactions" :headers="[
-        ['label' => __('Type'), 'index' => 'type'],
         ['label' => __('Amount'), 'index' => 'amount'],
+        ['label' => __('Type'), 'index' => 'type'],
         ['label' => __('Created_at'), 'index' => 'created_at'],
     ]" :quantity="[5, 10, 25, 50]" filter paginate>
 
-        @interact('column_type', $row)
+        @interact('column_amount', $row)
             @if ($row->type->value == 'credit')
                 <p class="text-green-500">{{ $row->amount }}</p>
             @else
@@ -24,19 +24,16 @@
             @endif
         @endinteract
 
-        @interact('column_amount', $row)
+        @interact('column_type', $row)
             <x-ts-badge :text="$row->type->value" :color="$row->type->value == 'credit' ? 'green' : 'red'" />
         @endinteract
 
         <x-slot::empty>
             <div class="flex flex-col items-center gap-2 py-6">
-                <flux:icon name="shopping-cart" class="size-8 text-zinc-400" />
+                <flux:icon name="wallet" class="size-8 text-zinc-400" />
                 <p class="text-sm text-zinc-500">
-                    {{ __('No orders found.') }}
+                    {{ __('No transactions found.') }}
                 </p>
-                <x-ts-button wire:click="$toggle('takeorder')" icon="plus" color="green" sm>
-                    {{ __('Take order') }}
-                </x-ts-button>
             </div>
         </x-slot::empty>
     </x-ts-table>

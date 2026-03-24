@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\Device;
+use Throwable;
 use App\Models\Order;
+use App\Models\Device;
 use App\Models\Service;
 use Illuminate\Support\Facades\DB;
-use Throwable;
 
 class OrderService
 {
@@ -30,5 +30,52 @@ class OrderService
         }
 
         return $order;
+    }
+
+    public function accept(Order $order): void
+    {
+        try {
+            $order->markAsAccepted();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function reject(Order $order): void
+    {
+        $user = $order->user;
+
+        DB::beginTransaction();
+        try {
+            (new WalletManagementService)->credit($user, $order->amount);
+            $order->markAsRejected();
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+    }
+
+    public function done(Order $order): void
+    {
+        try {
+            $order->markAsDone();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function cancel(Order $order): void
+    {
+        $user = $order->user;
+        DB::beginTransaction();
+        try {
+            (new WalletManagementService)->credit($user, $order->amount);
+            $order->markAsCancelled();
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
     }
 }

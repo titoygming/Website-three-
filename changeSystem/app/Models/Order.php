@@ -29,6 +29,26 @@ class Order extends Model
         ];
     }
 
+    public function markAsAccepted(): void
+    {
+        $this->update(['status' => OrderStatus::ACCEPTED->value]);
+    }
+
+    public function markAsDone(): void
+    {
+        $this->update(['status' => OrderStatus::DONE->value]);
+    }
+
+    public function markAsRejected(): void
+    {
+        $this->update(['status' => OrderStatus::REJECTED->value]);
+    }
+
+    public function markAsCancelled(): void
+    {
+        $this->update(['status' => OrderStatus::CANCELED->value]);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

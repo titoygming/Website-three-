@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\UserStatus;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,22 +19,14 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable, HasUlids;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+
     protected $fillable = [
         'name',
         'email',
+        'status',
         'password',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'two_factor_secret',
@@ -40,22 +34,16 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'status' => UserStatus::class
         ];
     }
 
-    /**
-     * Get the user's initials
-     */
+
     public function initials(): string
     {
         return Str::of($this->name)
@@ -63,6 +51,31 @@ class User extends Authenticatable
             ->take(2)
             ->map(fn($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    public function active(): bool
+    {
+        return $this->status == UserStatus::ACTIVE;
+    }
+
+    public function banned(): bool
+    {
+        return $this->status == UserStatus::BANNED;
+    }
+
+    public function markAsActive(): void
+    {
+        $this->update(['status' => UserStatus::ACTIVE]);
+    }
+
+    public function markAsInactive(): void
+    {
+        $this->update(['status' => UserStatus::INACTIVE]);
+    }
+
+    public function markAsBanned(): void
+    {
+        $this->update(['status' => UserStatus::BANNED]);
     }
 
     public function devices(): HasMany

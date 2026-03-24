@@ -25,6 +25,10 @@
         ['label' => __('Ordered at'), 'index' => 'created_at'],
     ]" :quantity="[5, 10, 25, 50]" filter paginate>
 
+        @interact('column_status', $row)
+            <x-ts-badge :text="$row->status->value" :color="$row->status->color()" />
+        @endinteract
+
         <x-slot::empty>
             <div class="flex flex-col items-center gap-2 py-6">
                 <flux:icon name="shopping-cart" class="size-8 text-zinc-400" />
