@@ -5,6 +5,8 @@ use App\Livewire\Manager\Dashboard as ManagerDashboard;
 use App\Livewire\Manager\Login;
 use App\Livewire\Manager\Orders as ManagerOrders;
 use App\Livewire\Manager\Services as ManagerServices;
+use App\Livewire\Manager\Services\Create as ManagerCreate;
+use App\Livewire\Manager\Services\Edit as ManagerEdit;
 use App\Livewire\Manager\Transactions as ManagerTransactions;
 use App\Livewire\Manager\Users as ManagerUsers;
 use App\Livewire\MyDevices;
@@ -33,7 +35,9 @@ Route::prefix('/manager')
             Route::get('/orders', ManagerOrders::class)->name('orders');
             Route::get('/users', ManagerUsers::class)->name('users');
             Route::get('/transactions', ManagerTransactions::class)->name('transactions');
-            Route::get('/services', ManagerServices::class)->name('services');
+            Route::get('/services', ManagerServices::class)->name('services.home');
+            Route::get('/services/create', ManagerCreate::class)->name('services.create');
+            Route::get('/services/{service}/edit', ManagerEdit::class)->name('services.edit');
 
 
             Route::post('/logout', function () {

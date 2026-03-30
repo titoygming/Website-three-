@@ -35,8 +35,8 @@
                 {{ __('Transactions') }}
             </flux:sidebar.item>
 
-            <flux:sidebar.item icon="wrench-screwdriver" :href="route('manager.services')"
-                :current="request()->routeIs('manager.services')" wire:navigate>
+            <flux:sidebar.item icon="wrench-screwdriver" :href="route('manager.services.home')"
+                :current="request()->routeIs('manager.services.*')" wire:navigate>
                 {{ __('Services') }}
             </flux:sidebar.item>
         </flux:sidebar.nav>

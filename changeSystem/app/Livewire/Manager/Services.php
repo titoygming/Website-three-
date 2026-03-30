@@ -20,8 +20,12 @@ class Services extends Component
     #[Computed()]
     public function services(): LengthAwarePaginator
     {
-        return Service::paginate($this->quantity);
+        return Service::query()
+            ->orderByDesc('created_at')
+            ->paginate($this->quantity);
     }
+
+
     #[Title('Our Services')]
     public function render(): View
     {

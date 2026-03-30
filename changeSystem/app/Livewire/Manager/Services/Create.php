@@ -9,11 +9,14 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\WithFileUploads;
+use TallStackUi\Traits\Interactions;
 
 #[Layout('layouts.manager')]
 class Create extends Component
 {
 
+    use WithFileUploads, Interactions;
     #[Validate(['required', 'string', 'min:3', 'max:255', 'unique:services,name'])]
     public string $name = '';
 
@@ -28,22 +31,28 @@ class Create extends Component
      */
     #[Validate(['required', 'image', 'max:2048', 'mimes:jpg,jpeg,png'])]
     public $image;
-    
+
 
     public function create(): void
     {
         $this->validate();
-
-        if ($this->image) {
+        try {
             $image = $this->image->store('services', 'public');
+            Service::create([
+                'name' => strtoupper($this->name),
+                'price' => $this->price,
+                'description' => $this->details,
+                'image_url' => $image
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            $this->dialog()->error('Error', 'An error occurred while creating the service. Please try again.');
+            return;
         }
 
-        $service = Service::create([
-            'name' => $this->name,
-            'price' => $this->price,
-            'description' => $this->details,
-            'image' => $image
-        ]);
+        $this->reset(['name', 'price', 'details', 'image']);
+        $this->dialog()->success('Success', 'Service created successfully.')->flash()->send();
+        $this->redirectRoute('manager.services.home', navigate: true);
     }
 
 

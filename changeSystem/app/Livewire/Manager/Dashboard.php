@@ -4,6 +4,7 @@ namespace App\Livewire\Manager;
 
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Service;
 use Livewire\Component;
 use Illuminate\View\View;
 use App\Models\Transaction;
@@ -26,11 +27,16 @@ class Dashboard extends Component
         return Order::query()->count('id');
     }
 
-
     #[Computed()]
     public function transactions(): int
     {
         return Transaction::query()->count('id');
+    }
+
+    #[Computed()]
+    public function services(): int
+    {
+        return Service::query()->count('id');
     }
 
     public function render(): View

@@ -11,5 +11,5 @@ class Service extends Model
     /** @use HasFactory<\Database\Factories\ServiceFactory> */
     use HasFactory, HasUlids;
 
-    protected $fillable = ['name', 'price', 'descriptions'];
+    protected $fillable = ['name', 'price', 'description', 'image_url'];
 }
