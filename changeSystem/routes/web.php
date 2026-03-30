@@ -11,6 +11,7 @@ use App\Livewire\Manager\Transactions as ManagerTransactions;
 use App\Livewire\Manager\Users as ManagerUsers;
 use App\Livewire\MyDevices;
 use App\Livewire\Orders;
+use App\Livewire\RechargeForm;
 use App\Livewire\Transactions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/devices', MyDevices::class)->name('devices');
     Route::get('/orders', Orders::class)->name('orders');
     Route::get('/transactions', Transactions::class)->name('transactions');
+    Route::get('/recharge', RechargeForm::class)->name('recharge');
 });
 
 require __DIR__ . '/settings.php';
