@@ -92,4 +92,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    public function rechargeRequests(): HasMany
+    {
+        return $this->hasMany(RechargeRequest::class);
+    }
 }

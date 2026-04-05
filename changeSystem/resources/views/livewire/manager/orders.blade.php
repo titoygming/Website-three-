@@ -51,9 +51,6 @@
                 <p class="text-sm text-zinc-500">
                     {{ __('No orders found.') }}
                 </p>
-                <x-ts-button wire:click="$toggle('takeorder')" icon="plus" color="green" sm>
-                    {{ __('Take order') }}
-                </x-ts-button>
             </div>
         </x-slot::empty>
     </x-ts-table>

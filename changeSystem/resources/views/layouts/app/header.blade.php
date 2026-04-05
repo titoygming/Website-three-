@@ -28,6 +28,10 @@
                 {{ __('Orders') }}
             </flux:navbar.item>
 
+            <flux:navbar.item icon="arrow-down-circle" :href="route('recharge-requests')"
+                :current="request()->routeIs('recharge-requests')" wire:navigate>
+                {{ __('Recharge requests') }}
+            </flux:navbar.item>
             <flux:navbar.item icon="arrow-path-rounded-square" :href="route('transactions')"
                 :current="request()->routeIs('transactions')" wire:navigate>
                 {{ __('Transactions') }}
@@ -36,9 +40,17 @@
 
         <flux:spacer />
         <flux:navbar>
-            <flux:navbar.item icon="fire" href="" target="_blank">
-                {{ user()->balance }}
-            </flux:navbar.item>
+
+
+            <flux:dropdown>
+                <flux:navbar.item icon="fire" href="" target="_blank">
+                    {{ user()->balance }}
+                </flux:navbar.item>
+
+                <flux:menu>
+                    <flux:menu.item icon="arrow-down-circle" :href="route('recharge')" wire:navigate>Recharge account</flux:menu.item>
+                </flux:menu>
+            </flux:dropdown>
         </flux:navbar>
         <x-desktop-user-menu />
     </flux:header>

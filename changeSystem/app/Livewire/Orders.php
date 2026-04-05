@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Events\OrderPlaced;
 use App\Models\Device;
 use App\Models\Order;
 use App\Models\Service;
@@ -86,6 +87,7 @@ class Orders extends Component
             'deviceId',
             'serviceId'
         ]);
+        broadcast(new OrderPlaced($order));
         $this->dialog()->success('Sucess', 'Your order has been placed')->send();
     }
 

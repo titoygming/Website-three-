@@ -39,6 +39,11 @@
                 :current="request()->routeIs('manager.services.*')" wire:navigate>
                 {{ __('Services') }}
             </flux:sidebar.item>
+
+            <flux:sidebar.item icon="arrow-down-circle" :href="route('manager.recharge-requests')"
+                :current="request()->routeIs('manager.recharge-requests')" wire:navigate>
+                {{ __('Recharge Requests') }}
+            </flux:sidebar.item>
         </flux:sidebar.nav>
 
         <flux:spacer />
