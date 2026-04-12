@@ -29,7 +29,7 @@ class OrderFactory extends Factory
             'device_id' => Device::factory()->for($user),
             'service_id' => Service::factory(),
             'transaction_id' => Transaction::factory()->for($user),
-            'status' => $this->faker->randomElement(OrderStatus::cases()),
+            'status' => fake()->randomElement(array_map(fn($case) => $case->value, OrderStatus::cases())),
             'amount' => $this->faker->numberBetween(10, 500),
         ];
     }

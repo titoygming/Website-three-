@@ -20,7 +20,7 @@ class ServiceFactory extends Factory
         return [
             'name' => $this->faker->word().' Service',
             'price' => $this->faker->numberBetween(10, 500),
-            'descriptions' => $this->faker->sentence(),
+            'description' => $this->faker->sentence(),
         ];
     }
 }
