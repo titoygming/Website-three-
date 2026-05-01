@@ -619,17 +619,11 @@
             <div class="flex items-center gap-8">
                 <a class="text-2xl font-black text-white tracking-tighter hover:scale-105 transition-transform flex items-center"
                     href="#">
-                    Nexa<span class="text-blue-600">V</span>ault
+                    RIBE<span class="text-blue-600">R</span>I
                 </a>
                 <div class="hidden md:flex items-center gap-6">
                     <a class="text-blue-400 font-bold border-b-2 border-blue-600 pb-1 font-body text-sm"
                         href="#">Marketplace</a>
-                    <a class="text-zinc-300 hover:text-white transition-colors hover:bg-zinc-800 rounded-lg px-3 py-2 transition-all font-body text-sm"
-                        href="#">Auctions</a>
-                    <a class="text-zinc-300 hover:text-white transition-colors hover:bg-zinc-800 rounded-lg px-3 py-2 transition-all font-body text-sm"
-                        href="#">Vaults</a>
-                    <a class="text-zinc-300 hover:text-white transition-colors hover:bg-zinc-800 rounded-lg px-3 py-2 transition-all font-body text-sm"
-                        href="#">Creators</a>
                 </div>
             </div>
             <div class="flex items-center gap-4">
@@ -671,8 +665,7 @@
                 Your Digital Universe,<br /><span class="text-blue-500">Delivered Instantly.</span>
             </h1>
             <p class="text-zinc-400 text-lg md:text-xl font-medium mb-10 tracking-wide">
-                Games <span class="mx-2 text-blue-600">·</span> Streaming <span class="mx-2 text-blue-600">·</span>
-                Gift Cards <span class="mx-2 text-blue-600">·</span> Crypto
+                Repair Services <span class="mx-2 text-blue-600">·</span> Gift Cards
             </p>
             <div class="flex flex-wrap justify-center gap-4">
                 <button
@@ -693,436 +686,161 @@
      ===================================================================== -->
     <main class="py-20 space-y-24 max-w-[1920px] mx-auto px-6">
 
-        <!-- ── Gaming Section ─────────────────────────────────────────────── -->
-        <section>
-            <div class="flex items-center justify-between mb-10">
-                <div class="border-l-4 border-blue-600 pl-4">
-                    <h2 class="font-headline text-2xl font-bold text-on-background tracking-tight">Gaming Universe</h2>
-                    <div class="h-1 w-12 bg-blue-600/30 mt-1"></div>
-                </div>
-                <a class="text-primary font-bold text-sm hover:underline" href="#">See all titles</a>
-            </div>
 
-            <div class="flex gap-6 overflow-x-auto pb-8 hide-scrollbar snap-x">
-
-                <!-- Card 1 — Cyberpunk 2077 -->
-                <div class="min-w-[280px] snap-start bg-surface-container-lowest rounded-xl border border-zinc-200 overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 group"
-                    x-data="{
-                        product: {
-                            id: 'game-001',
-                            name: 'Cyberpunk 2077',
-                            platform: 'Steam Code',
-                            price: 4200,
-                            type: 'game',
-                            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBe_Y_2cN8QJqimwdECKLNpOkZKxvWOok7SsKou_FnpG9LN9CXafBOntWubO4yzvcvLRAR0BOcJQsEqk7ltVb1BgTDr2-k_FCY9A-r5vrFqurrzkTvrD28CwIgSzqGYcbAdXfbxXX7Km-mqlpK6nxQyKP_MFWWVUU_mPDGod6aOTcV3U52n-qRu1LkNGotCd7BsRQv1O5O8vYQIvlaiCR0ptBiWrbMI24K4nCzZ3SddftvmwcR2s6Dvvgq5B7k4hbIalPdOqWusFRLW'
-                        },
-                        added: false
-                    }">
-                    <div class="aspect-square bg-surface-container overflow-hidden">
-                        <img class="w-full h-full object-cover transition-transform group-hover:scale-110"
-                            :src="product.image" :alt="product.name" />
+        <!-- ── Repair Services (Dynamic from DB) ─────────────────────────── -->
+        @if ($repairServices->isNotEmpty())
+            <section id="repair-services">
+                <div class="flex items-center justify-between mb-10">
+                    <div class="border-l-4 border-orange-500 pl-4">
+                        <h2 class="font-headline text-2xl font-bold text-on-background tracking-tight">Repair Services
+                        </h2>
+                        <div class="h-1 w-12 bg-orange-500/30 mt-1"></div>
                     </div>
-                    <div class="p-5">
-                        <p class="text-xs text-zinc-500 font-bold uppercase tracking-widest mb-1"
-                            x-text="product.platform"></p>
-                        <h3 class="text-sm font-black text-on-background mb-3" x-text="product.name"></h3>
-                        <div class="flex items-center justify-between gap-2">
-                            <span class="text-sm font-black text-blue-600">MZN 4.200</span>
-                            <button
-                                @click="$store.cart.addItem(product); added = true; setTimeout(() => added = false, 1500)"
-                                :class="added ? 'bg-green-500 scale-95' : 'bg-primary hover:bg-primary-container'"
-                                class="px-4 py-2 text-white text-xs font-black rounded-full transition-all flex items-center gap-1.5">
-                                <span class="material-symbols-outlined text-sm"
-                                    x-text="added ? 'check' : 'add_shopping_cart'"></span>
-                                <span x-text="added ? 'Adicionado!' : 'Adicionar'"></span>
-                            </button>
+                    <span
+                        class="text-xs font-bold text-zinc-400 uppercase tracking-widest">{{ $repairServices->count() }}
+                        services</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    @foreach ($repairServices as $service)
+                        <div class="relative bg-surface-container-lowest rounded-xl border border-zinc-200 overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 group"
+                            x-data="{
+                                product: {
+                                    id: '{{ $service->id }}',
+                                    name: {{ Js::from($service->name) }},
+                                    platform: 'Repair Service',
+                                    price: {{ $service->price }},
+                                    type: 'repair',
+                                    image: null
+                                },
+                                added: false
+                            }">
+                            {{-- Icon header --}}
+                            <div
+                                class="aspect-4/3 bg-linear-to-br from-orange-500/10 via-surface-container to-amber-500/5 flex items-center justify-center relative overflow-hidden">
+                                <div
+                                    class="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(249,115,22,0.15),transparent_60%)]">
+                                </div>
+                                @php
+                                    $icons = [
+                                        'Screen' => 'phone_iphone',
+                                        'Battery' => 'battery_charging_full',
+                                        'Network' => 'signal_cellular_alt',
+                                        'Unlock' => 'lock_open',
+                                        'FRP' => 'shield',
+                                        'Bypass' => 'shield',
+                                        'Software' => 'system_update',
+                                        'Flash' => 'system_update',
+                                        'Data' => 'sd_storage',
+                                        'Recovery' => 'sd_storage',
+                                        'Water' => 'water_drop',
+                                        'Charging' => 'cable',
+                                        'Port' => 'cable',
+                                    ];
+                                    $icon = 'build';
+                                    foreach ($icons as $keyword => $materialIcon) {
+                                        if (str_contains($service->name, $keyword)) {
+                                            $icon = $materialIcon;
+                                            break;
+                                        }
+                                    }
+                                @endphp
+                                <span
+                                    class="material-symbols-outlined text-6xl text-orange-500/60 group-hover:text-orange-500 group-hover:scale-110 transition-all duration-300 relative z-10">{{ $icon }}</span>
+                            </div>
+
+                            {{-- Content --}}
+                            <div class="p-5">
+                                <p class="text-[10px] text-orange-500 font-bold uppercase tracking-widest mb-1">Repair
+                                </p>
+                                <h3 class="text-sm font-black text-on-background mb-2">{{ $service->name }}</h3>
+                                <p class="text-xs text-zinc-500 leading-relaxed mb-4 line-clamp-2">
+                                    {{ $service->description }}</p>
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-sm font-black text-orange-600">MZN
+                                        {{ number_format($service->price, 0, ',', '.') }}</span>
+                                    <button
+                                        @click="$store.cart.addItem(product); added = true; setTimeout(() => added = false, 1500)"
+                                        :class="added ? 'bg-green-500 scale-95' : 'bg-orange-500 hover:bg-orange-600'"
+                                        class="px-4 py-2 text-white text-xs font-black rounded-full transition-all flex items-center gap-1.5">
+                                        <span class="material-symbols-outlined text-sm"
+                                            x-text="added ? 'check' : 'add_shopping_cart'"></span>
+                                        <span x-text="added ? 'Adicionado!' : 'Adicionar'"></span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
+            </section>
+        @endif
 
-                <!-- Card 2 — Starfield -->
-                <div class="min-w-[280px] snap-start bg-surface-container-lowest rounded-xl border border-zinc-200 overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 group"
-                    x-data="{
-                        product: {
-                            id: 'game-002',
-                            name: 'Starfield',
-                            platform: 'Epic Games',
-                            price: 3800,
-                            type: 'game',
-                            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB9I2dKQ71eqHjyVfWjrTTaNor_Lq2j2SGTkBwZoTp2ExbynXydCi3p-0aC0vcoauKzf2ESaLM29NroDAOWLcc7QS4i38Qp7xattarU54Rmqu9GzDFxOwTS5deiW3D7j9PWUnYdNByosCMsG_F80-0ye0byLjVOgPVcMwXgYHo5fQ99qCR2rt8Z0iTT7UsWkvAeBsxNn8XBDfKS1TrT1MIB3cr9nU_3KjcYVeblJzMiX5JOtoS2XOn5P1NfoQgeaxl_kY1V5ZiuVQ0b'
-                        },
-                        added: false
-                    }">
-                    <div class="aspect-square bg-surface-container overflow-hidden">
-                        <img class="w-full h-full object-cover transition-transform group-hover:scale-110"
-                            :src="product.image" :alt="product.name" />
-                    </div>
-                    <div class="p-5">
-                        <p class="text-xs text-zinc-500 font-bold uppercase tracking-widest mb-1"
-                            x-text="product.platform"></p>
-                        <h3 class="text-sm font-black text-on-background mb-3" x-text="product.name"></h3>
-                        <div class="flex items-center justify-between gap-2">
-                            <span class="text-sm font-black text-blue-600">MZN 3.800</span>
-                            <button
-                                @click="$store.cart.addItem(product); added = true; setTimeout(() => added = false, 1500)"
-                                :class="added ? 'bg-green-500 scale-95' : 'bg-primary hover:bg-primary-container'"
-                                class="px-4 py-2 text-white text-xs font-black rounded-full transition-all flex items-center gap-1.5">
-                                <span class="material-symbols-outlined text-sm"
-                                    x-text="added ? 'check' : 'add_shopping_cart'"></span>
-                                <span x-text="added ? 'Adicionado!' : 'Adicionar'"></span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3 — God of War -->
-                <div class="min-w-[280px] snap-start bg-surface-container-lowest rounded-xl border border-zinc-200 overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 group"
-                    x-data="{
-                        product: {
-                            id: 'game-003',
-                            name: 'God of War',
-                            platform: 'PlayStation',
-                            price: 5100,
-                            type: 'game',
-                            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCCskLwRRN6gL3m9s1FKDbm178lwOG8LqZo9kQKGwK6sIqboAB5v5zyiEESbPDnX5bY3XPT-4xUklLvnfech7hTOe3YY6pXyWPN447f3Za_mtYEODRr6iDt-G0Rtgx2vUZWkieeLNR1cnlwSqGNhBG_Q6fYLPBR3G0ZAvu4IEl6ktnvDBejXJ-xq5xZ7UUqdIxttJPXztQTRs4D06qeJCbyDVqICep8Zoyu1XDVLxpayj0iGbrPuKwbhCUzO6ajlfECAYy2XLDx_FWZ'
-                        },
-                        added: false
-                    }">
-                    <div class="aspect-square bg-surface-container overflow-hidden">
-                        <img class="w-full h-full object-cover transition-transform group-hover:scale-110"
-                            :src="product.image" :alt="product.name" />
-                    </div>
-                    <div class="p-5">
-                        <p class="text-xs text-zinc-500 font-bold uppercase tracking-widest mb-1"
-                            x-text="product.platform"></p>
-                        <h3 class="text-sm font-black text-on-background mb-3" x-text="product.name"></h3>
-                        <div class="flex items-center justify-between gap-2">
-                            <span class="text-sm font-black text-blue-600">MZN 5.100</span>
-                            <button
-                                @click="$store.cart.addItem(product); added = true; setTimeout(() => added = false, 1500)"
-                                :class="added ? 'bg-green-500 scale-95' : 'bg-primary hover:bg-primary-container'"
-                                class="px-4 py-2 text-white text-xs font-black rounded-full transition-all flex items-center gap-1.5">
-                                <span class="material-symbols-outlined text-sm"
-                                    x-text="added ? 'check' : 'add_shopping_cart'"></span>
-                                <span x-text="added ? 'Adicionado!' : 'Adicionar'"></span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 4 — Halo Infinite -->
-                <div class="min-w-[280px] snap-start bg-surface-container-lowest rounded-xl border border-zinc-200 overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 group"
-                    x-data="{
-                        product: {
-                            id: 'game-004',
-                            name: 'Halo Infinite',
-                            platform: 'Xbox Store',
-                            price: 3500,
-                            type: 'game',
-                            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBVTf_22M_3t1-DEvBDFJN8iV10XME_3LAsAPA5XRQR2a0WYcmVIJtZ63ggWVM0Utr5ktZ6wuXvIOX-YgA25m4g0G1kKmdeJJYj5HxSGeYTNboImvvyiTp7JA115t5cYqedz0pkLT9aOtkLaOn9N-AdvgahuXtOLBtCSSRpNNNkwQxiYjiXSxsOYevrC6epwebqkCcCsSHBjgF-wq1g_jEytNJbgZyZXw93OLTWQk9Hs1cOscpPN9hnwmAtrKtnGz_iXvslDR4_HmXX'
-                        },
-                        added: false
-                    }">
-                    <div class="aspect-square bg-surface-container overflow-hidden">
-                        <img class="w-full h-full object-cover transition-transform group-hover:scale-110"
-                            :src="product.image" :alt="product.name" />
-                    </div>
-                    <div class="p-5">
-                        <p class="text-xs text-zinc-500 font-bold uppercase tracking-widest mb-1"
-                            x-text="product.platform"></p>
-                        <h3 class="text-sm font-black text-on-background mb-3" x-text="product.name"></h3>
-                        <div class="flex items-center justify-between gap-2">
-                            <span class="text-sm font-black text-blue-600">MZN 3.500</span>
-                            <button
-                                @click="$store.cart.addItem(product); added = true; setTimeout(() => added = false, 1500)"
-                                :class="added ? 'bg-green-500 scale-95' : 'bg-primary hover:bg-primary-container'"
-                                class="px-4 py-2 text-white text-xs font-black rounded-full transition-all flex items-center gap-1.5">
-                                <span class="material-symbols-outlined text-sm"
-                                    x-text="added ? 'check' : 'add_shopping_cart'"></span>
-                                <span x-text="added ? 'Adicionado!' : 'Adicionar'"></span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 5 — Far Cry 6 -->
-                <div class="min-w-[280px] snap-start bg-surface-container-lowest rounded-xl border border-zinc-200 overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 group"
-                    x-data="{
-                        product: {
-                            id: 'game-005',
-                            name: 'Far Cry 6',
-                            platform: 'Ubisoft Connect',
-                            price: 2900,
-                            type: 'game',
-                            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC4vQMuw120E-5vHm6JBQUF_aPacGI7jRL_-MFacppxBfJKJQ1sG7NK50YTpIzSzlJiEbUwNeBrfyEh6S1_KnJlimH4o90cgFH8bLgwuYBFxa7EsLo7u3OpDdx6mH_e8A55MKoIAFfkP3Yy9NVFh61BQ29f9jr2st49OpKXYSwbkd8GTy4GgtP1usb5tX3Vkg4p8uVWoAaeXfvQlHdrEfldPpUxiV8bRauaDLrnGMfvvzz7W-CXjlhvPKYT8H1zajSYxGZw-CBrSEgV'
-                        },
-                        added: false
-                    }">
-                    <div class="aspect-square bg-surface-container overflow-hidden">
-                        <img class="w-full h-full object-cover transition-transform group-hover:scale-110"
-                            :src="product.image" :alt="product.name" />
-                    </div>
-                    <div class="p-5">
-                        <p class="text-xs text-zinc-500 font-bold uppercase tracking-widest mb-1"
-                            x-text="product.platform"></p>
-                        <h3 class="text-sm font-black text-on-background mb-3" x-text="product.name"></h3>
-                        <div class="flex items-center justify-between gap-2">
-                            <span class="text-sm font-black text-blue-600">MZN 2.900</span>
-                            <button
-                                @click="$store.cart.addItem(product); added = true; setTimeout(() => added = false, 1500)"
-                                :class="added ? 'bg-green-500 scale-95' : 'bg-primary hover:bg-primary-container'"
-                                class="px-4 py-2 text-white text-xs font-black rounded-full transition-all flex items-center gap-1.5">
-                                <span class="material-symbols-outlined text-sm"
-                                    x-text="added ? 'check' : 'add_shopping_cart'"></span>
-                                <span x-text="added ? 'Adicionado!' : 'Adicionar'"></span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ── Streaming Section ───────────────────────────────────────────── -->
-        <section>
-            <div class="flex items-center justify-between mb-10">
-                <div class="border-l-4 border-blue-600 pl-4">
-                    <h2 class="font-headline text-2xl font-bold text-on-background tracking-tight">Streaming &amp;
-                        Media</h2>
-                    <div class="h-1 w-12 bg-blue-600/30 mt-1"></div>
-                </div>
-            </div>
-            <div class="flex gap-6 overflow-x-auto pb-8 hide-scrollbar snap-x">
-
-                <!-- Netflix -->
-                <div class="min-w-[280px] snap-start bg-surface-container-lowest rounded-xl border border-zinc-200 overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 group"
-                    x-data="{
-                        product: { id: 'sub-001', name: 'Netflix 1 Year', platform: 'Subscription', price: 7200, type: 'subscription', image: null },
-                        added: false
-                    }">
-                    <div class="aspect-square bg-zinc-900 flex items-center justify-center p-8">
-                        <div
-                            class="w-full h-full bg-gradient-to-tr from-red-600 to-red-400 rounded-lg flex items-center justify-center text-white font-black text-4xl">
-                            N</div>
-                    </div>
-                    <div class="p-5">
-                        <p class="text-xs text-zinc-500 font-bold uppercase tracking-widest mb-1"
-                            x-text="product.platform"></p>
-                        <h3 class="text-sm font-black text-on-background mb-3" x-text="product.name"></h3>
-                        <div class="flex items-center justify-between gap-2">
-                            <span class="text-sm font-black text-blue-600">MZN 7.200</span>
-                            <button
-                                @click="$store.cart.addItem(product); added = true; setTimeout(() => added = false, 1500)"
-                                :class="added ? 'bg-green-500 scale-95' : 'bg-primary hover:bg-primary-container'"
-                                class="px-4 py-2 text-white text-xs font-black rounded-full transition-all flex items-center gap-1.5">
-                                <span class="material-symbols-outlined text-sm"
-                                    x-text="added ? 'check' : 'add_shopping_cart'"></span>
-                                <span x-text="added ? 'Adicionado!' : 'Adicionar'"></span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Spotify -->
-                <div class="min-w-[280px] snap-start bg-surface-container-lowest rounded-xl border border-zinc-200 overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 group"
-                    x-data="{
-                        product: { id: 'sub-002', name: 'Spotify Family', platform: 'Subscription', price: 4800, type: 'subscription', image: null },
-                        added: false
-                    }">
-                    <div class="aspect-square bg-zinc-900 flex items-center justify-center p-8">
-                        <div
-                            class="w-full h-full bg-gradient-to-tr from-green-600 to-green-400 rounded-lg flex items-center justify-center text-white font-black text-4xl">
-                            S</div>
-                    </div>
-                    <div class="p-5">
-                        <p class="text-xs text-zinc-500 font-bold uppercase tracking-widest mb-1"
-                            x-text="product.platform"></p>
-                        <h3 class="text-sm font-black text-on-background mb-3" x-text="product.name"></h3>
-                        <div class="flex items-center justify-between gap-2">
-                            <span class="text-sm font-black text-blue-600">MZN 4.800</span>
-                            <button
-                                @click="$store.cart.addItem(product); added = true; setTimeout(() => added = false, 1500)"
-                                :class="added ? 'bg-green-500 scale-95' : 'bg-primary hover:bg-primary-container'"
-                                class="px-4 py-2 text-white text-xs font-black rounded-full transition-all flex items-center gap-1.5">
-                                <span class="material-symbols-outlined text-sm"
-                                    x-text="added ? 'check' : 'add_shopping_cart'"></span>
-                                <span x-text="added ? 'Adicionado!' : 'Adicionar'"></span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Disney+ -->
-                <div class="min-w-[280px] snap-start bg-surface-container-lowest rounded-xl border border-zinc-200 overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 group"
-                    x-data="{
-                        product: { id: 'sub-003', name: 'Disney+ Annual', platform: 'Subscription', price: 5500, type: 'subscription', image: null },
-                        added: false
-                    }">
-                    <div class="aspect-square bg-zinc-900 flex items-center justify-center p-8">
-                        <div
-                            class="w-full h-full bg-gradient-to-tr from-blue-400 to-indigo-600 rounded-lg flex items-center justify-center text-white font-black text-4xl">
-                            D+</div>
-                    </div>
-                    <div class="p-5">
-                        <p class="text-xs text-zinc-500 font-bold uppercase tracking-widest mb-1"
-                            x-text="product.platform"></p>
-                        <h3 class="text-sm font-black text-on-background mb-3" x-text="product.name"></h3>
-                        <div class="flex items-center justify-between gap-2">
-                            <span class="text-sm font-black text-blue-600">MZN 5.500</span>
-                            <button
-                                @click="$store.cart.addItem(product); added = true; setTimeout(() => added = false, 1500)"
-                                :class="added ? 'bg-green-500 scale-95' : 'bg-primary hover:bg-primary-container'"
-                                class="px-4 py-2 text-white text-xs font-black rounded-full transition-all flex items-center gap-1.5">
-                                <span class="material-symbols-outlined text-sm"
-                                    x-text="added ? 'check' : 'add_shopping_cart'"></span>
-                                <span x-text="added ? 'Adicionado!' : 'Adicionar'"></span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ── Exchange & Vaults ───────────────────────────────────────────── -->
-        <section class="bg-zinc-900 p-12 rounded-[2rem] overflow-hidden relative">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[100px]"></div>
-            <div class="relative z-10 mb-12">
-                <div class="border-l-4 border-blue-500 pl-4">
-                    <h2 class="font-headline text-3xl font-black text-white tracking-tighter">Exchange &amp; Vaults
-                    </h2>
-                    <p class="text-zinc-500 text-sm mt-2">Secure digital asset trading</p>
-                </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div
-                    class="md:col-span-2 bg-zinc-800/50 backdrop-blur-md p-8 rounded-xl border border-zinc-700/50 hover:border-blue-500/50 transition-all group">
-                    <div class="flex justify-between items-start mb-12">
-                        <span class="material-symbols-outlined text-blue-500 text-4xl">currency_bitcoin</span>
-                        <span class="text-xs font-bold text-zinc-500 uppercase tracking-widest">Featured Vault</span>
-                    </div>
-                    <h3 class="text-2xl font-black text-white mb-2">BTC High-Yield Pool</h3>
-                    <p class="text-zinc-400 mb-8 max-w-md">Lock your BTC assets in our liquidity vaults for up to 12%
-                        APY returns, audited and secured by NexaProtocol.</p>
-                    <button
-                        class="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg group-hover:bg-blue-500 transition-colors">Enter
-                        Vault</button>
-                </div>
-                <div
-                    class="bg-zinc-800/50 backdrop-blur-md p-8 rounded-xl border border-zinc-700/50 hover:border-blue-500/50 transition-all">
-                    <span class="material-symbols-outlined text-blue-500 text-4xl mb-12">swap_horiz</span>
-                    <h3 class="text-xl font-black text-white mb-2">InstaSwap</h3>
-                    <p class="text-zinc-400 text-sm mb-8">Swap 200+ digital currencies instantly with zero hidden fees.
-                    </p>
-                    <a class="text-blue-500 font-bold text-sm flex items-center gap-2 group" href="#">
-                        Launch Swap <span
-                            class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- ── Gift Cards ──────────────────────────────────────────────────── -->
-        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- ── Gift Cards (Dynamic from DB) ──────────────────────────────── -->
+        <section id="gift-cards" class="gap-12">
             <div>
                 <div class="flex items-center justify-between mb-8">
                     <div class="border-l-4 border-blue-600 pl-4">
                         <h2 class="font-headline text-2xl font-bold text-on-background tracking-tight">Gift Cards</h2>
+                        <div class="h-1 w-12 bg-blue-600/30 mt-1"></div>
                     </div>
                 </div>
-                <div class="space-y-4">
 
-                    <!-- Amazon -->
-                    <div class="flex items-center gap-4 p-4 bg-surface-container-lowest border border-zinc-200 rounded-xl hover:shadow-lg transition-all cursor-pointer group"
-                        x-data="{
-                            product: { id: 'gc-001', name: 'Amazon Gift Card', platform: 'Gift Card', price: 1000, type: 'giftcard', image: null },
-                            added: false
-                        }"
-                        @click="$store.cart.addItem(product); added = true; setTimeout(() => added = false, 1500)">
-                        <div
-                            class="w-16 h-10 bg-zinc-900 rounded-md flex items-center justify-center text-blue-500 text-xs font-black flex-shrink-0">
-                            AMZ</div>
-                        <div class="flex-1 min-w-0">
-                            <h4 class="font-bold text-sm" x-text="product.name"></h4>
-                            <p class="text-xs text-zinc-500">MZN 1.000 – MZN 30.000</p>
-                        </div>
-                        <span class="material-symbols-outlined text-primary transition-all"
-                            :class="added ? 'text-green-500 rotate-0' : 'opacity-0 group-hover:opacity-100'"
-                            x-text="added ? 'check_circle' : 'add_shopping_cart'"></span>
+                @if ($giftCards->isNotEmpty())
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        @foreach ($giftCards as $card)
+                            @php
+                                $brandIcons = [
+                                    'Amazon' => ['abbr' => 'AMZ', 'from' => 'from-yellow-500', 'to' => 'to-orange-400'],
+                                    'App Store' => ['abbr' => 'AAPL', 'from' => 'from-gray-700', 'to' => 'to-gray-500'],
+                                    'iTunes' => ['abbr' => 'AAPL', 'from' => 'from-pink-500', 'to' => 'to-pink-400'],
+                                    'Google' => ['abbr' => 'GGL', 'from' => 'from-green-500', 'to' => 'to-emerald-400'],
+                                    'Netflix' => ['abbr' => 'NFLX', 'from' => 'from-red-600', 'to' => 'to-red-400'],
+                                    'PlayStation' => [
+                                        'abbr' => 'PSN',
+                                        'from' => 'from-blue-600',
+                                        'to' => 'to-indigo-500',
+                                    ],
+                                    'Xbox' => ['abbr' => 'XBOX', 'from' => 'from-green-600', 'to' => 'to-green-400'],
+                                ];
+                                $brand = collect($brandIcons)->first(fn($v, $k) => str_contains($card->name, $k));
+                                $brand = $brand ?? ['abbr' => 'GC', 'from' => 'from-blue-500', 'to' => 'to-blue-400'];
+                            @endphp
+                            <div class="flex items-center gap-4 p-4 bg-surface-container-lowest border border-zinc-200 rounded-xl hover:shadow-lg transition-all cursor-pointer group"
+                                x-data="{
+                                    product: {
+                                        id: '{{ $card->id }}',
+                                        name: {{ Js::from($card->name) }},
+                                        platform: 'Gift Card',
+                                        price: {{ $card->price }},
+                                        type: 'giftcard',
+                                        image: null
+                                    },
+                                    added: false
+                                }"
+                                @click="$store.cart.addItem(product); added = true; setTimeout(() => added = false, 1500)">
+                                <div
+                                    class="w-14 h-14 bg-linear-to-br {{ $brand['from'] }} {{ $brand['to'] }} rounded-lg flex items-center justify-center text-white text-xs font-black shrink-0 shadow-lg">
+                                    {{ $brand['abbr'] }}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-bold text-sm text-on-background">{{ $card->name }}</h4>
+                                    <p class="text-xs text-zinc-500 line-clamp-1">{{ $card->description }}</p>
+                                </div>
+                                <div class="flex flex-col items-end gap-1 flex-shrink-0">
+                                    <span class="text-sm font-black text-blue-600">MZN
+                                        {{ number_format($card->price, 0, ',', '.') }}</span>
+                                    <span class="material-symbols-outlined text-primary transition-all text-lg"
+                                        :class="added ? 'text-green-500 rotate-0' : 'opacity-0 group-hover:opacity-100'"
+                                        x-text="added ? 'check_circle' : 'add_shopping_cart'"></span>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
-
-                    <!-- Apple -->
-                    <div class="flex items-center gap-4 p-4 bg-surface-container-lowest border border-zinc-200 rounded-xl hover:shadow-lg transition-all cursor-pointer group"
-                        x-data="{
-                            product: { id: 'gc-002', name: 'App Store & iTunes', platform: 'Gift Card', price: 1500, type: 'giftcard', image: null },
-                            added: false
-                        }"
-                        @click="$store.cart.addItem(product); added = true; setTimeout(() => added = false, 1500)">
-                        <div
-                            class="w-16 h-10 bg-zinc-900 rounded-md flex items-center justify-center text-blue-500 text-xs font-black flex-shrink-0">
-                            AAPL</div>
-                        <div class="flex-1 min-w-0">
-                            <h4 class="font-bold text-sm" x-text="product.name"></h4>
-                            <p class="text-xs text-zinc-500">Global Region Activation</p>
-                        </div>
-                        <span class="material-symbols-outlined text-primary transition-all"
-                            :class="added ? 'text-green-500 rotate-0' : 'opacity-0 group-hover:opacity-100'"
-                            x-text="added ? 'check_circle' : 'add_shopping_cart'"></span>
-                    </div>
-
-                    <!-- Google Play -->
-                    <div class="flex items-center gap-4 p-4 bg-surface-container-lowest border border-zinc-200 rounded-xl hover:shadow-lg transition-all cursor-pointer group"
-                        x-data="{
-                            product: { id: 'gc-003', name: 'Google Play Credit', platform: 'Gift Card', price: 800, type: 'giftcard', image: null },
-                            added: false
-                        }"
-                        @click="$store.cart.addItem(product); added = true; setTimeout(() => added = false, 1500)">
-                        <div
-                            class="w-16 h-10 bg-zinc-900 rounded-md flex items-center justify-center text-blue-500 text-xs font-black flex-shrink-0">
-                            GGL</div>
-                        <div class="flex-1 min-w-0">
-                            <h4 class="font-bold text-sm" x-text="product.name"></h4>
-                            <p class="text-xs text-zinc-500">Instant Digital Delivery</p>
-                        </div>
-                        <span class="material-symbols-outlined text-primary transition-all"
-                            :class="added ? 'text-green-500 rotate-0' : 'opacity-0 group-hover:opacity-100'"
-                            x-text="added ? 'check_circle' : 'add_shopping_cart'"></span>
-                    </div>
-                </div>
+                @else
+                    <p class="text-zinc-500 text-sm">No gift cards available at the moment.</p>
+                @endif
             </div>
 
-            <div>
-                <div class="flex items-center justify-between mb-8">
-                    <div class="border-l-4 border-blue-600 pl-4">
-                        <h2 class="font-headline text-2xl font-bold text-on-background tracking-tight">Account
-                            Activation</h2>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div
-                        class="p-6 bg-surface-container-low rounded-xl text-center hover:bg-white transition-colors border border-transparent hover:border-primary-container group">
-                        <span class="material-symbols-outlined text-4xl text-primary mb-4">shield_person</span>
-                        <h4 class="font-black text-sm mb-1">Verified Accounts</h4>
-                        <p class="text-[10px] text-zinc-500 uppercase font-bold">2,401 Available</p>
-                    </div>
-                    <div
-                        class="p-6 bg-surface-container-low rounded-xl text-center hover:bg-white transition-colors border border-transparent hover:border-primary-container group">
-                        <span class="material-symbols-outlined text-4xl text-primary mb-4">vpn_key</span>
-                        <h4 class="font-black text-sm mb-1">Key Generation</h4>
-                        <p class="text-[10px] text-zinc-500 uppercase font-bold">Instant Access</p>
-                    </div>
-                    <div
-                        class="p-6 bg-surface-container-low rounded-xl text-center hover:bg-white transition-colors border border-transparent hover:border-primary-container group">
-                        <span class="material-symbols-outlined text-4xl text-primary mb-4">security</span>
-                        <h4 class="font-black text-sm mb-1">2FA Setup</h4>
-                        <p class="text-[10px] text-zinc-500 uppercase font-bold">Service Included</p>
-                    </div>
-                    <div
-                        class="p-6 bg-surface-container-low rounded-xl text-center hover:bg-white transition-colors border border-transparent hover:border-primary-container group">
-                        <span class="material-symbols-outlined text-4xl text-primary mb-4">speed</span>
-                        <h4 class="font-black text-sm mb-1">VIP Boost</h4>
-                        <p class="text-[10px] text-zinc-500 uppercase font-bold">Fast-Tracked</p>
-                    </div>
-                </div>
-            </div>
         </section>
     </main>
 
@@ -1134,10 +852,10 @@
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
                 <div>
-                    <h2 class="text-xl font-bold text-white mb-6">NexaVault</h2>
+                    <h2 class="text-xl font-bold text-white mb-6">RIBERI</h2>
                     <p class="text-zinc-400 text-sm leading-relaxed mb-6">
                         The premiere marketplace for premium digital goods, gaming accounts, and crypto-backed assets.
-                        Secured by NexaProtocol.
+                        Secured by RIBERI.
                     </p>
                     <div class="flex gap-4">
                         <a class="w-10 h-10 bg-zinc-800 rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-colors"
@@ -1194,7 +912,7 @@
             </div>
             <div
                 class="pt-12 border-t border-blue-600/30 flex flex-col md:flex-row justify-between items-center gap-6">
-                <p class="text-zinc-400 text-xs">© 2025 NexaVault Digital Goods. All rights reserved.</p>
+                <p class="text-zinc-400 text-xs">© 2025 RIBERI Digital Goods. All rights reserved.</p>
                 <div class="flex gap-8">
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 use TallStackUi\Traits\Interactions;
@@ -25,8 +26,11 @@ class Orders extends Component
     public string $search = '';
     public ?int $quantity = 5;
 
-    public ?string $serviceId = null;
+
+    #[Url('service_code')]
+    public ?string $serviceId = '';
     public ?string $deviceId = null;
+    #[Url('take_order')]
     public bool $takeorder = false;
 
 
@@ -44,7 +48,7 @@ class Orders extends Component
     #[Computed()]
     public function services(): array
     {
-        return Service::query()->get()
+        return Service::query()->repair()->get()
             ->map(fn($service) => ['label' => $service->name, 'value' => $service->id, 'note' => $service->descriptions])
             ->toArray();
     }

@@ -19,6 +19,7 @@ class ServiceFactory extends Factory
     {
         return [
             'name' => $this->faker->word().' Service',
+            'type' => 'repair',
             'price' => $this->faker->numberBetween(10, 500),
             'description' => $this->faker->sentence(),
         ];

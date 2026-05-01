@@ -16,11 +16,17 @@ use App\Livewire\RechargeForm;
 use App\Livewire\RechargeGuide;
 use App\Livewire\RechargeRequests;
 use App\Livewire\Transactions;
+use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
-Route::view('/', 'welcome')->name('home');
+Route::get('/', function () {
+    return view('welcome', [
+        'repairServices' => Service::query()->repair()->latest()->get(),
+        'giftCards' => Service::query()->giftcard()->latest()->get(),
+    ]);
+})->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
@@ -32,7 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('recharge-guide', RechargeGuide::class)->name('recharge-guide');
 });
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';
 
 Route::prefix('/manager')
     ->name('manager.')
@@ -46,7 +52,6 @@ Route::prefix('/manager')
             Route::get('/services/create', ManagerCreate::class)->name('services.create');
             Route::get('/services/{service}/edit', ManagerEdit::class)->name('services.edit');
             Route::get('/recharge-requests', ManagerRechargeRequests::class)->name('recharge-requests');
-
 
             Route::post('/logout', function () {
                 Auth::guard('manager')->logout();

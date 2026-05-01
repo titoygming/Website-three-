@@ -25,7 +25,7 @@
 
             <flux:navbar.item icon="shopping-cart" :href="route('orders')" :current="request()->routeIs('orders')"
                 wire:navigate>
-                {{ __('Orders') }}
+                {{ __('Repair orders') }}
             </flux:navbar.item>
 
             <flux:navbar.item icon="arrow-down-circle" :href="route('recharge-requests')"
@@ -48,7 +48,8 @@
                 </flux:navbar.item>
 
                 <flux:menu>
-                    <flux:menu.item icon="arrow-down-circle" :href="route('recharge')" wire:navigate>Recharge account</flux:menu.item>
+                    <flux:menu.item icon="arrow-down-circle" :href="route('recharge')" wire:navigate>Recharge account
+                    </flux:menu.item>
                 </flux:menu>
             </flux:dropdown>
         </flux:navbar>
