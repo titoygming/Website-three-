@@ -9,7 +9,7 @@ describe('UserService', function () {
         test('marks user as active', function () {
             $user = User::factory()->create(['status' => UserStatus::INACTIVE->value]);
 
-            $service = new UserService();
+            $service = new UserService;
             $service->active($user);
 
             $user->refresh();
@@ -19,7 +19,7 @@ describe('UserService', function () {
         test('persists active status in database', function () {
             $user = User::factory()->create(['status' => UserStatus::INACTIVE->value]);
 
-            $service = new UserService();
+            $service = new UserService;
             $service->active($user);
 
             $freshUser = User::find($user->id);
@@ -29,7 +29,7 @@ describe('UserService', function () {
         test('marks banned user as active', function () {
             $user = User::factory()->create(['status' => UserStatus::BANNED->value]);
 
-            $service = new UserService();
+            $service = new UserService;
             $service->active($user);
 
             $user->refresh();
@@ -39,7 +39,7 @@ describe('UserService', function () {
         test('idempotent operation', function () {
             $user = User::factory()->create(['status' => UserStatus::ACTIVE->value]);
 
-            $service = new UserService();
+            $service = new UserService;
             $service->active($user);
 
             $user->refresh();
@@ -49,7 +49,7 @@ describe('UserService', function () {
         test('returns void', function () {
             $user = User::factory()->create(['status' => UserStatus::INACTIVE->value]);
 
-            $service = new UserService();
+            $service = new UserService;
             $result = $service->active($user);
 
             expect($result)->toBeNull();
@@ -60,7 +60,7 @@ describe('UserService', function () {
         test('marks user as inactive', function () {
             $user = User::factory()->create(['status' => UserStatus::ACTIVE->value]);
 
-            $service = new UserService();
+            $service = new UserService;
             $service->incative($user);
 
             $user->refresh();
@@ -70,7 +70,7 @@ describe('UserService', function () {
         test('persists inactive status in database', function () {
             $user = User::factory()->create(['status' => UserStatus::ACTIVE->value]);
 
-            $service = new UserService();
+            $service = new UserService;
             $service->incative($user);
 
             $freshUser = User::find($user->id);
@@ -80,7 +80,7 @@ describe('UserService', function () {
         test('marks banned user as inactive', function () {
             $user = User::factory()->create(['status' => UserStatus::BANNED->value]);
 
-            $service = new UserService();
+            $service = new UserService;
             $service->incative($user);
 
             $user->refresh();
@@ -90,7 +90,7 @@ describe('UserService', function () {
         test('idempotent operation', function () {
             $user = User::factory()->create(['status' => UserStatus::INACTIVE->value]);
 
-            $service = new UserService();
+            $service = new UserService;
             $service->incative($user);
 
             $user->refresh();
@@ -100,7 +100,7 @@ describe('UserService', function () {
         test('returns void', function () {
             $user = User::factory()->create(['status' => UserStatus::ACTIVE->value]);
 
-            $service = new UserService();
+            $service = new UserService;
             $result = $service->incative($user);
 
             expect($result)->toBeNull();
@@ -111,7 +111,7 @@ describe('UserService', function () {
         test('marks user as banned', function () {
             $user = User::factory()->create(['status' => UserStatus::ACTIVE->value]);
 
-            $service = new UserService();
+            $service = new UserService;
             $service->ban($user);
 
             $user->refresh();
@@ -121,7 +121,7 @@ describe('UserService', function () {
         test('persists banned status in database', function () {
             $user = User::factory()->create(['status' => UserStatus::ACTIVE->value]);
 
-            $service = new UserService();
+            $service = new UserService;
             $service->ban($user);
 
             $freshUser = User::find($user->id);
@@ -131,7 +131,7 @@ describe('UserService', function () {
         test('can ban inactive user', function () {
             $user = User::factory()->create(['status' => UserStatus::INACTIVE->value]);
 
-            $service = new UserService();
+            $service = new UserService;
             $service->ban($user);
 
             $user->refresh();
@@ -141,7 +141,7 @@ describe('UserService', function () {
         test('idempotent operation', function () {
             $user = User::factory()->create(['status' => UserStatus::BANNED->value]);
 
-            $service = new UserService();
+            $service = new UserService;
             $service->ban($user);
 
             $user->refresh();
@@ -151,7 +151,7 @@ describe('UserService', function () {
         test('returns void', function () {
             $user = User::factory()->create(['status' => UserStatus::ACTIVE->value]);
 
-            $service = new UserService();
+            $service = new UserService;
             $result = $service->ban($user);
 
             expect($result)->toBeNull();
@@ -161,7 +161,7 @@ describe('UserService', function () {
     describe('status transitions', function () {
         test('can transition between all statuses', function () {
             $user = User::factory()->create(['status' => UserStatus::ACTIVE->value]);
-            $service = new UserService();
+            $service = new UserService;
 
             $service->incative($user);
             $user->refresh();

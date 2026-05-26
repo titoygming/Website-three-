@@ -2,33 +2,35 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use Illuminate\View\View;
-use Livewire\WithFileUploads;
-use Livewire\Attributes\Title;
-use App\Models\RechargeRequest;
-use Livewire\Attributes\Computed;
-use TallStackUi\Traits\Interactions;
 use App\Enums\RechargeRequestStatus;
 use App\Events\RechargeRequestPlaced;
+use App\Models\RechargeRequest;
+use Illuminate\View\View;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Title;
+use Livewire\Component;
+use Livewire\TemporaryUploadedFile;
+use Livewire\WithFileUploads;
+use TallStackUi\Traits\Interactions;
 
 class RechargeForm extends Component
 {
-
-    use WithFileUploads, Interactions;
+    use Interactions, WithFileUploads;
 
     public string $tab = 'natcash';
 
     public string $sender_fullname;
+
     public string $transcode;
+
     public ?int $amount;
+
     public string $sender_number;
 
     /**
-     * @var \Livewire\TemporaryUploadedFile
+     * @var TemporaryUploadedFile
      */
     public $screenshot;
-
 
     public mixed $paymentMethods = [
         'natcash' => [
@@ -42,9 +44,8 @@ class RechargeForm extends Component
             'description' => 'Pay with MonCash and get your balance instantly.',
             'holder_name' => 'MonCash',
             'account_number' => '1234 5678 9012 4444',
-        ]
+        ],
     ];
-
 
     #[Computed()]
     public function paymentMethod(): array
@@ -71,10 +72,11 @@ class RechargeForm extends Component
                 'amount' => $this->amount,
                 'number' => $this->sender_number,
                 'status' => RechargeRequestStatus::Pending->value,
-                'screenshot_path' => $this->screenshot->store('screenshots', 'public')
+                'screenshot_path' => $this->screenshot->store('screenshots', 'public'),
             ]);
         } catch (\Throwable $th) {
             $this->dialog()->error('Error', 'An error occurred while submitting your recharge request. Please try again later.')->send();
+
             return;
         }
 

@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\ServiceType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('services', function (Blueprint $table) {
-            $table->string('type')->default(ServiceType::Repair->value)->after('name');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->char('device_id', 26)->nullable()->change();
         });
     }
 
@@ -22,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('services', function (Blueprint $table) {
-            $table->dropColumn('type');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->char('device_id', 26)->nullable(false)->change();
         });
     }
 };

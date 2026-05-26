@@ -18,7 +18,7 @@ describe('OrderService', function () {
             $device = Device::factory()->for($user)->create();
             $service = Service::factory()->create(['price' => 100]);
 
-            $orderService = new OrderService();
+            $orderService = new OrderService;
             $order = $orderService->handle($device, $service);
 
             expect($order)->toBeInstanceOf(Order::class);
@@ -38,7 +38,7 @@ describe('OrderService', function () {
             $device = Device::factory()->for($user)->create();
             $service = Service::factory()->create(['price' => 50]);
 
-            $orderService = new OrderService();
+            $orderService = new OrderService;
             $orderService->handle($device, $service);
 
             $transaction = Transaction::latest()->first();
@@ -54,7 +54,7 @@ describe('OrderService', function () {
             $device = Device::factory()->for($user)->create();
             $service = Service::factory()->create(['price' => 100]);
 
-            $orderService = new OrderService();
+            $orderService = new OrderService;
             $this->expectException(Exception::class);
             $this->expectExceptionMessage("Balance isn't enough");
 
@@ -71,12 +71,12 @@ describe('OrderService', function () {
             $originalBalance = $user->balance;
             $originalTransactionCount = Transaction::count();
 
-            $orderService = new OrderService();
+            $orderService = new OrderService;
 
             try {
                 $orderService->handle($device, $service);
             } catch (Exception $e) {
-                // Expected to succeed, not fail  
+                // Expected to succeed, not fail
             }
 
             $user->refresh();
@@ -93,7 +93,7 @@ describe('OrderService', function () {
             $device = Device::factory()->for($user)->create();
             $service = Service::factory()->create(['price' => 0]);
 
-            $orderService = new OrderService();
+            $orderService = new OrderService;
             $order = $orderService->handle($device, $service);
 
             expect($order)->toBeInstanceOf(Order::class);
@@ -108,7 +108,7 @@ describe('OrderService', function () {
             $device = Device::factory()->for($user)->create();
             $service = Service::factory()->create(['price' => 49999]);
 
-            $orderService = new OrderService();
+            $orderService = new OrderService;
             $order = $orderService->handle($device, $service);
 
             expect($order->amount)->toBe(49999);
@@ -121,7 +121,7 @@ describe('OrderService', function () {
         test('marks order as accepted', function () {
             $order = Order::factory()->create(['status' => OrderStatus::PENDING->value]);
 
-            $orderService = new OrderService();
+            $orderService = new OrderService;
             $orderService->accept($order);
 
             $order->refresh();
@@ -132,7 +132,7 @@ describe('OrderService', function () {
             $user = User::factory()->create(['balance' => 500]);
             $order = Order::factory()->for($user)->create(['amount' => 100, 'status' => OrderStatus::PENDING->value]);
 
-            $orderService = new OrderService();
+            $orderService = new OrderService;
             $orderService->accept($order);
 
             $user->refresh();
@@ -145,7 +145,7 @@ describe('OrderService', function () {
             $user = User::factory()->create(['balance' => 900]);
             $order = Order::factory()->for($user)->create(['amount' => 100, 'status' => OrderStatus::PENDING->value]);
 
-            $orderService = new OrderService();
+            $orderService = new OrderService;
             $orderService->reject($order);
 
             $order->refresh();
@@ -159,7 +159,7 @@ describe('OrderService', function () {
             $user = User::factory()->create(['balance' => 900]);
             $order = Order::factory()->for($user)->create(['amount' => 100, 'status' => OrderStatus::PENDING->value]);
 
-            $orderService = new OrderService();
+            $orderService = new OrderService;
             $orderService->reject($order);
 
             $order->refresh();
@@ -167,14 +167,14 @@ describe('OrderService', function () {
 
             $user->refresh();
             expect($user->balance)->toBe(1000);
-            
+
             // Verify a credit transaction exists for this rejection
             $creditTransaction = Transaction::where('user_id', $user->id)
                 ->where('amount', 100)
                 ->where('type', TransactionType::CREDIT)
                 ->latest()
                 ->first();
-            
+
             expect($creditTransaction)->not->toBeNull();
         });
     });
@@ -183,7 +183,7 @@ describe('OrderService', function () {
         test('marks order as done', function () {
             $order = Order::factory()->create(['status' => OrderStatus::ACCEPTED->value]);
 
-            $orderService = new OrderService();
+            $orderService = new OrderService;
             $orderService->done($order);
 
             $order->refresh();
@@ -194,7 +194,7 @@ describe('OrderService', function () {
             $user = User::factory()->create(['balance' => 900]);
             $order = Order::factory()->for($user)->create(['amount' => 100, 'status' => OrderStatus::ACCEPTED->value]);
 
-            $orderService = new OrderService();
+            $orderService = new OrderService;
             $orderService->done($order);
 
             $user->refresh();
@@ -207,7 +207,7 @@ describe('OrderService', function () {
             $user = User::factory()->create(['balance' => 900]);
             $order = Order::factory()->for($user)->create(['amount' => 100, 'status' => OrderStatus::PENDING->value]);
 
-            $orderService = new OrderService();
+            $orderService = new OrderService;
             $orderService->cancel($order);
 
             $order->refresh();
@@ -221,7 +221,7 @@ describe('OrderService', function () {
             $user = User::factory()->create(['balance' => 900]);
             $order = Order::factory()->for($user)->create(['amount' => 100, 'status' => OrderStatus::PENDING->value]);
 
-            $orderService = new OrderService();
+            $orderService = new OrderService;
             $orderService->cancel($order);
 
             $order->refresh();
@@ -229,14 +229,14 @@ describe('OrderService', function () {
 
             $user->refresh();
             expect($user->balance)->toBe(1000);
-            
+
             // Verify a credit transaction exists
             $creditTransaction = Transaction::where('user_id', $user->id)
                 ->where('amount', 100)
                 ->where('type', TransactionType::CREDIT)
                 ->latest()
                 ->first();
-            
+
             expect($creditTransaction)->not->toBeNull();
         });
 
@@ -248,7 +248,7 @@ describe('OrderService', function () {
                 $order = Order::factory()->for($user)->create(['amount' => 100, 'status' => $status->value]);
                 $initialBalance = $user->balance;
 
-                $orderService = new OrderService();
+                $orderService = new OrderService;
                 $orderService->cancel($order);
 
                 $order->refresh();

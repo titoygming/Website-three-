@@ -8,7 +8,7 @@ test('Manager login screen can renders successfully', function () {
         ->assertStatus(200);
 });
 
-test("Manager can login", function () {
+test('Manager can login', function () {
     $manager = Manager::factory()->create();
     Livewire::test('manager.login')
         ->set('email', $manager->email)
@@ -16,7 +16,6 @@ test("Manager can login", function () {
         ->call('login')
         ->assertRedirectToRoute('manager.dashboard');
 });
-
 
 test("Manager can't login with invalid creds", function () {
     $manager = Manager::factory()->create();

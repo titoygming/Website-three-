@@ -2,39 +2,39 @@
 
 namespace App\Livewire\Manager;
 
-use App\Models\Order;
-use Livewire\Component;
-use Illuminate\View\View;
-use Livewire\WithPagination;
 use App\Concerns\ErrorHandler;
-use Livewire\Attributes\Title;
+use App\Models\Order;
 use App\Services\OrderService;
-use Livewire\Attributes\Layout;
-use Livewire\Attributes\Computed;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\View\View;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.manager')]
 class Orders extends Component
 {
+    use ErrorHandler, WithPagination;
 
-    use WithPagination, ErrorHandler;
+    public ?string $search = '';
 
-    public ?string $search = "";
     public ?int $quantity = 5;
 
     #[Computed()]
     public function orders(): LengthAwarePaginator
     {
-        $orders = Cache::remember(user()->id . '-orders', 30, fn() => Order::query()->orderByDesc('created_at')->paginate($this->quantity));
+        $orders = Cache::remember(user()->id.'-orders', 30, fn () => Order::query()->orderByDesc('created_at')->paginate($this->quantity));
+
         return $orders;
     }
 
     protected function clearOrderCache(): void
     {
-        Cache::forget(user()->id . '-orders');
+        Cache::forget(user()->id.'-orders');
     }
-
 
     public function acceptOrder(Order $order): void
     {
@@ -42,6 +42,7 @@ class Orders extends Component
             (new OrderService)->accept($order);
         } catch (\Throwable $th) {
             $this->dialog()->error('Error', 'Something went wrong. Please try again later')->send();
+
             return;
         }
         $this->clearOrderCache();
@@ -55,6 +56,7 @@ class Orders extends Component
             (new OrderService)->cancel($order);
         } catch (\Throwable $th) {
             $this->dialog()->error('Error', 'Something went wrong. Please try again later')->send();
+
             return;
         }
 
@@ -68,6 +70,7 @@ class Orders extends Component
             (new OrderService)->reject($order);
         } catch (\Throwable $th) {
             $this->dialog()->error('Error', 'Something went wrong. Please try again later')->send();
+
             return;
         }
 
@@ -81,6 +84,7 @@ class Orders extends Component
             (new OrderService)->done($order);
         } catch (\Throwable $th) {
             $this->dialog()->error('Error', 'Something went wrong. Please try again later')->send();
+
             return;
         }
 

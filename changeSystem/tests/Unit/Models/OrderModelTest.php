@@ -4,7 +4,6 @@ use App\Enums\OrderStatus;
 use App\Models\Device;
 use App\Models\Order;
 use App\Models\Service;
-use App\Models\Transaction;
 use App\Models\User;
 
 test('order belongs to user', function () {
@@ -31,7 +30,7 @@ test('order belongs to service', function () {
     expect($order->service->id)->toBe($service->id);
 });
 
-test('order can be marked as accepted',function () {
+test('order can be marked as accepted', function () {
     $order = Order::factory()->create(['status' => OrderStatus::PENDING->value]);
 
     $order->markAsAccepted();

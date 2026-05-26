@@ -11,9 +11,10 @@ use Livewire\WithPagination;
 
 class Transactions extends Component
 {
-
     use WithPagination;
+
     public mixed $search = '';
+
     public mixed $quantity = 5;
 
     #[Computed()]
@@ -24,7 +25,7 @@ class Transactions extends Component
             ->paginate();
     }
 
-    #[Title("Transactions")]
+    #[Title('Transactions')]
     public function render(): View
     {
         return view('livewire.transactions');

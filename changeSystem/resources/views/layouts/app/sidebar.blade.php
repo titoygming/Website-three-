@@ -20,6 +20,11 @@
                 {{ __('Dashboard') }}
             </flux:sidebar.item>
 
+            <flux:sidebar.item icon="building-storefront" :href="route('home')"
+                :current="request()->routeIs('home')" wire:navigate>
+                {{ __('Marketplace') }}
+            </flux:sidebar.item>
+
             <flux:sidebar.item icon="shopping-cart" :href="route('manager.orders')"
                 :current="request()->routeIs('manager.orders')" wire:navigate>
                 {{ __('Orders') }}
@@ -38,6 +43,11 @@
             <flux:sidebar.item icon="wrench-screwdriver" :href="route('manager.services.home')"
                 :current="request()->routeIs('manager.services.*')" wire:navigate>
                 {{ __('Services') }}
+            </flux:sidebar.item>
+
+            <flux:sidebar.item icon="gift" :href="route('manager.giftcards.home')"
+                :current="request()->routeIs('manager.giftcards.*')" wire:navigate>
+                {{ __('Gift Cards') }}
             </flux:sidebar.item>
 
             <flux:sidebar.item icon="arrow-down-circle" :href="route('manager.recharge-requests')"

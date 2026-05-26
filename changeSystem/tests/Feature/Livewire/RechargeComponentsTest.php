@@ -1,9 +1,8 @@
 <?php
 
-use App\Models\User;
-use App\Enums\RechargeRequestStatus;
-use App\Models\RechargeRequest;
 use App\Models\PaymentMethod;
+use App\Models\RechargeRequest;
+use App\Models\User;
 use Livewire\Livewire;
 
 it('renders successfully', function () {

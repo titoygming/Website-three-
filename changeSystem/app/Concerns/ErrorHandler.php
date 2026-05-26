@@ -8,6 +8,7 @@ use TallStackUi\Traits\Interactions;
 trait ErrorHandler
 {
     use Interactions;
+
     public function exception($e, $stopPropagation)
     {
         if ($e instanceof ModelNotFoundException) {

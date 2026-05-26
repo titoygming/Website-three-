@@ -10,7 +10,7 @@ describe('WalletManagementService', function () {
         test('debits user balance', function () {
             $user = User::factory()->create(['balance' => 1000]);
 
-            $service = new WalletManagementService();
+            $service = new WalletManagementService;
             $transaction = $service->debit($user, 100);
 
             $user->refresh();
@@ -21,7 +21,7 @@ describe('WalletManagementService', function () {
         test('creates debit transaction record', function () {
             $user = User::factory()->create(['balance' => 1000]);
 
-            $service = new WalletManagementService();
+            $service = new WalletManagementService;
             $transaction = $service->debit($user, 100);
 
             expect($transaction)->toBeInstanceOf(Transaction::class);
@@ -33,25 +33,25 @@ describe('WalletManagementService', function () {
         test('throws exception when balance is insufficient', function () {
             $user = User::factory()->create(['balance' => 50]);
 
-            $service = new WalletManagementService();
+            $service = new WalletManagementService;
 
-            expect(fn() => $service->debit($user, 100))
+            expect(fn () => $service->debit($user, 100))
                 ->toThrow(Exception::class, "Balance isn't enough");
         });
 
         test('throws exception when balance equals zero', function () {
             $user = User::factory()->create(['balance' => 0]);
 
-            $service = new WalletManagementService();
+            $service = new WalletManagementService;
 
-            expect(fn() => $service->debit($user, 50))
+            expect(fn () => $service->debit($user, 50))
                 ->toThrow(Exception::class);
         });
 
         test('debits exact amount when balance is sufficient', function () {
             $user = User::factory()->create(['balance' => 100]);
 
-            $service = new WalletManagementService();
+            $service = new WalletManagementService;
             $service->debit($user, 100);
 
             $user->refresh();
@@ -61,7 +61,7 @@ describe('WalletManagementService', function () {
         test('allows multiple debits', function () {
             $user = User::factory()->create(['balance' => 1000]);
 
-            $service = new WalletManagementService();
+            $service = new WalletManagementService;
             $service->debit($user, 100);
             $service->debit($user, 200);
             $service->debit($user, 50);
@@ -75,7 +75,7 @@ describe('WalletManagementService', function () {
         test('handles zero debit amount', function () {
             $user = User::factory()->create(['balance' => 1000]);
 
-            $service = new WalletManagementService();
+            $service = new WalletManagementService;
             $transaction = $service->debit($user, 0);
 
             $user->refresh();
@@ -87,7 +87,7 @@ describe('WalletManagementService', function () {
             $user = User::factory()->create(['balance' => 1000]);
             $originalBalance = $user->balance;
 
-            $service = new WalletManagementService();
+            $service = new WalletManagementService;
 
             try {
                 $service->debit($user, 100);
@@ -104,7 +104,7 @@ describe('WalletManagementService', function () {
         test('credits user balance', function () {
             $user = User::factory()->create(['balance' => 1000]);
 
-            $service = new WalletManagementService();
+            $service = new WalletManagementService;
             $transaction = $service->credit($user, 100);
 
             $user->refresh();
@@ -115,7 +115,7 @@ describe('WalletManagementService', function () {
         test('creates credit transaction record', function () {
             $user = User::factory()->create(['balance' => 1000]);
 
-            $service = new WalletManagementService();
+            $service = new WalletManagementService;
             $transaction = $service->credit($user, 100);
 
             expect($transaction)->toBeInstanceOf(Transaction::class);
@@ -127,7 +127,7 @@ describe('WalletManagementService', function () {
         test('allows credit on zero balance account', function () {
             $user = User::factory()->create(['balance' => 0]);
 
-            $service = new WalletManagementService();
+            $service = new WalletManagementService;
             $transaction = $service->credit($user, 100);
 
             $user->refresh();
@@ -137,7 +137,7 @@ describe('WalletManagementService', function () {
         test('allows multiple credits', function () {
             $user = User::factory()->create(['balance' => 1000]);
 
-            $service = new WalletManagementService();
+            $service = new WalletManagementService;
             $service->credit($user, 100);
             $service->credit($user, 200);
             $service->credit($user, 50);
@@ -151,7 +151,7 @@ describe('WalletManagementService', function () {
         test('handles zero credit amount', function () {
             $user = User::factory()->create(['balance' => 1000]);
 
-            $service = new WalletManagementService();
+            $service = new WalletManagementService;
             $transaction = $service->credit($user, 0);
 
             $user->refresh();
@@ -162,7 +162,7 @@ describe('WalletManagementService', function () {
         test('handles large credit amounts', function () {
             $user = User::factory()->create(['balance' => 1000]);
 
-            $service = new WalletManagementService();
+            $service = new WalletManagementService;
             $service->credit($user, 1000000);
 
             $user->refresh();
@@ -175,7 +175,7 @@ describe('WalletManagementService', function () {
             $user1 = User::factory()->create(['balance' => 1000]);
             $user2 = User::factory()->create(['balance' => 2000]);
 
-            $service = new WalletManagementService();
+            $service = new WalletManagementService;
             $service->debit($user1, 100);
             $service->credit($user2, 100);
 

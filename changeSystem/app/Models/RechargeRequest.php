@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\RechargeRequestStatus;
+use Database\Factories\RechargeRequestFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class RechargeRequest extends Model
 {
-    /** @use HasFactory<\Database\Factories\RechargeRequestFactory> */
+    /** @use HasFactory<RechargeRequestFactory> */
     use HasFactory, HasUlids;
 
     protected $fillable = [

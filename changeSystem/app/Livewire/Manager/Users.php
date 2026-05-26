@@ -5,28 +5,28 @@ namespace App\Livewire\Manager;
 use App\Concerns\ErrorHandler;
 use App\Models\User;
 use App\Services\UserService;
-use Livewire\Component;
-use Illuminate\View\View;
-use Livewire\WithPagination;
-use Livewire\Attributes\Title;
-use Livewire\Attributes\Layout;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.manager')]
 class Users extends Component
 {
+    use ErrorHandler, WithPagination;
 
-    use WithPagination, ErrorHandler;
-    public mixed $search = "";
+    public mixed $search = '';
+
     public mixed $quantity = 5;
-
 
     #[Computed()]
     public function users(): LengthAwarePaginator
     {
         return User::query()
-            ->when($this->search, fn($query, $search) => $query->whereLike('email', "%{$search}%")->orWhereLike('name', "%{$search}%"))
+            ->when($this->search, fn ($query, $search) => $query->whereLike('email', "%{$search}%")->orWhereLike('name', "%{$search}%"))
             ->paginate($this->quantity);
     }
 
@@ -37,6 +37,7 @@ class Users extends Component
         } catch (\Throwable $th) {
             // throw $th;
             $this->dialog()->error('Error', 'Something went wrong')->send();
+
             return;
         }
 
@@ -50,6 +51,7 @@ class Users extends Component
         } catch (\Throwable $th) {
             // throw $th;
             $this->dialog()->error('Error', 'Something went wrong')->send();
+
             return;
         }
 
@@ -63,6 +65,7 @@ class Users extends Component
         } catch (\Throwable $th) {
             // throw $th;
             $this->dialog()->error('Error', 'Something went wrong')->send();
+
             return;
         }
 
@@ -76,6 +79,7 @@ class Users extends Component
         } catch (\Throwable $th) {
             // throw $th;
             $this->dialog()->error('Error', 'Something went wrong')->send();
+
             return;
         }
 

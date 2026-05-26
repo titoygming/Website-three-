@@ -18,6 +18,10 @@
                 wire:navigate>
                 {{ __('Dashboard') }}
             </flux:navbar.item>
+            <flux:navbar.item icon="building-storefront" :href="route('home')" :current="request()->routeIs('home')"
+                wire:navigate>
+                {{ __('Marketplace') }}
+            </flux:navbar.item>
             <flux:navbar.item icon="device-phone-mobile" :href="route('devices')"
                 :current="request()->routeIs('devices')" wire:navigate>
                 {{ __('My Devices') }}
@@ -25,7 +29,7 @@
 
             <flux:navbar.item icon="shopping-cart" :href="route('orders')" :current="request()->routeIs('orders')"
                 wire:navigate>
-                {{ __('Repair orders') }}
+                {{ __('Orders') }}
             </flux:navbar.item>
 
             <flux:navbar.item icon="arrow-down-circle" :href="route('recharge-requests')"
@@ -44,7 +48,7 @@
 
             <flux:dropdown>
                 <flux:navbar.item icon="fire" href="" target="_blank">
-                    {{ user()->balance }}
+                    {{ number_format(user()->balance, 2) }}
                 </flux:navbar.item>
 
                 <flux:menu>
@@ -70,6 +74,10 @@
                 <flux:sidebar.item icon="layout-grid" :href="route('dashboard')"
                     :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
+                </flux:sidebar.item>
+                <flux:sidebar.item icon="building-storefront" :href="route('home')"
+                    :current="request()->routeIs('home')" wire:navigate>
+                    {{ __('Marketplace') }}
                 </flux:sidebar.item>
                 <flux:sidebar.item icon="device-phone-mobile" :href="route('devices')"
                     :current="request()->routeIs('devices')" wire:navigate>

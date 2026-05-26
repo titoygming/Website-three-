@@ -1,11 +1,10 @@
 <?php
 
-use App\Models\User;
-use App\Models\Order;
-use App\Models\Device;
-use App\Models\Service;
-use Livewire\Livewire;
 use App\Enums\OrderStatus;
+use App\Models\Device;
+use App\Models\Order;
+use App\Models\User;
+use Livewire\Livewire;
 
 it('renders successfully', function () {
     $user = User::factory()->create();
@@ -51,7 +50,7 @@ it('rejects an order', function () {
 
     $order->refresh();
     expect($order->status->value)->toBe(OrderStatus::REJECTED->value);
-    
+
     $order->user->refresh();
     expect($order->user->balance)->toBeGreaterThan($originalBalance);
 });
@@ -81,7 +80,7 @@ it('cancels an order', function () {
 
     $order->refresh();
     expect($order->status->value)->toBe(OrderStatus::CANCELED->value);
-    
+
     $order->user->refresh();
     expect($order->user->balance)->toBeGreaterThan($originalBalance);
 });

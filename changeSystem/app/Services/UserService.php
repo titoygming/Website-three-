@@ -6,11 +6,8 @@ use App\Models\User;
 
 class UserService
 {
+    public function create(): void {}
 
-    public function create(): void
-    {
-        return;
-    }
     public function active(User $user): void
     {
         try {

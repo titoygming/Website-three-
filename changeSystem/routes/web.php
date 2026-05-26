@@ -1,7 +1,11 @@
 <?php
 
+use App\Livewire\BuyGiftcard;
 use App\Livewire\Dashboard;
 use App\Livewire\Manager\Dashboard as ManagerDashboard;
+use App\Livewire\Manager\Giftcards as ManagerGiftcards;
+use App\Livewire\Manager\Giftcards\Create as ManagerGiftcardsCreate;
+use App\Livewire\Manager\Giftcards\Edit as ManagerGiftcardsEdit;
 use App\Livewire\Manager\Login;
 use App\Livewire\Manager\Orders as ManagerOrders;
 use App\Livewire\Manager\RechargeRequests as ManagerRechargeRequests;
@@ -30,6 +34,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    Route::get('/buy-giftcard', BuyGiftcard::class)->name('buy-giftcard');
     Route::get('/devices', MyDevices::class)->name('devices');
     Route::get('/orders', Orders::class)->name('orders');
     Route::get('/transactions', Transactions::class)->name('transactions');
@@ -51,6 +56,11 @@ Route::prefix('/manager')
             Route::get('/services', ManagerServices::class)->name('services.home');
             Route::get('/services/create', ManagerCreate::class)->name('services.create');
             Route::get('/services/{service}/edit', ManagerEdit::class)->name('services.edit');
+
+            Route::get('/giftcards', ManagerGiftcards::class)->name('giftcards.home');
+            Route::get('/giftcards/create', ManagerGiftcardsCreate::class)->name('giftcards.create');
+            Route::get('/giftcards/{giftcard}/edit', ManagerGiftcardsEdit::class)->name('giftcards.edit');
+
             Route::get('/recharge-requests', ManagerRechargeRequests::class)->name('recharge-requests');
 
             Route::post('/logout', function () {

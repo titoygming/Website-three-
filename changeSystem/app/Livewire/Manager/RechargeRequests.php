@@ -22,11 +22,15 @@ class RechargeRequests extends Component
     use ErrorHandler;
 
     public ?int $quantity = 5;
+
     public string $search = '';
 
     public bool $modal = false;
+
     public bool $viewDetail = false;
+
     public int $amount = 0;
+
     public string $request_id = '';
 
     public ?RechargeRequest $request = null;
@@ -43,6 +47,7 @@ class RechargeRequests extends Component
             $rechargeRequest->markAsRejected();
         } catch (\Throwable $th) {
             $this->dialog()->error('general', __('Failed to mark recharge request as rejected. Please try again later.'))->send();
+
             return;
         }
         broadcast(new RechargeRequestRejected($rechargeRequest->user));
@@ -58,6 +63,7 @@ class RechargeRequests extends Component
             $this->dialog()
                 ->error('general', __('Failed to mark recharge request as accepted. Please try again later.'))
                 ->send();
+
             return;
         }
 
@@ -75,19 +81,20 @@ class RechargeRequests extends Component
     public function rechargeUserAccount(RechargeRequest $rechargeRequest): void
     {
         $this->validate([
-            'amount' => ['required', 'numeric', 'min:1', 'max:50000']
+            'amount' => ['required', 'numeric', 'min:1', 'max:50000'],
         ]);
 
         DB::beginTransaction();
         try {
             $rechargeRequest->markAsDone();
-            (new WalletManagementService())
+            (new WalletManagementService)
                 ->credit($rechargeRequest->user, $this->amount);
             DB::commit();
         } catch (\Throwable $th) {
-            //throw $th;
+            // throw $th;
             DB::rollBack();
             $this->dialog()->error('general', 'Failed to recharge user account')->send();
+
             return;
         }
 
@@ -110,8 +117,6 @@ class RechargeRequests extends Component
         $this->request = $rechargeRequest;
         $this->viewDetail = true;
     }
-
-
 
     #[Title('Recharge Requests')]
     public function render(): View

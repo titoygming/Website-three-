@@ -11,23 +11,24 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Layout('layouts.manager')]
-class Services extends Component
+class Giftcards extends Component
 {
     public string $search = '';
 
     public ?int $quantity = 5;
 
     #[Computed()]
-    public function services(): LengthAwarePaginator
+    public function giftcards(): LengthAwarePaginator
     {
         return Service::query()
+            ->giftcard()
             ->orderByDesc('created_at')
             ->paginate($this->quantity);
     }
 
-    #[Title('Our Services')]
+    #[Title('Gift Cards')]
     public function render(): View
     {
-        return view('livewire.manager.services');
+        return view('livewire.manager.giftcards');
     }
 }

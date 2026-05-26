@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\OrderStatus;
+use Database\Factories\OrderFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
-    /** @use HasFactory<\Database\Factories\OrderFactory> */
+    /** @use HasFactory<OrderFactory> */
     use HasFactory, HasUlids;
 
     protected $fillable = [
@@ -25,7 +26,7 @@ class Order extends Model
     protected function casts(): array
     {
         return [
-            'status' => OrderStatus::class
+            'status' => OrderStatus::class,
         ];
     }
 

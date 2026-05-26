@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Manager;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,13 +18,13 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Dotanin Dev',
             'email' => 'dotanin@dev.com',
-            'balance' => 100
+            'balance' => 100,
         ]);
 
         $this->call([
             DeviceSeeder::class,
             ServiceSeeder::class,
-            ManagerSeeder::class
+            ManagerSeeder::class,
         ]);
     }
 }

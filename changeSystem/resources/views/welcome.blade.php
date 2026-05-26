@@ -759,14 +759,11 @@
                                 <div class="flex items-center justify-between gap-2">
                                     <span class="text-sm font-black text-orange-600">MZN
                                         {{ number_format($service->price, 0, ',', '.') }}</span>
-                                    <button
-                                        @click="$store.cart.addItem(product); added = true; setTimeout(() => added = false, 1500)"
-                                        :class="added ? 'bg-green-500 scale-95' : 'bg-orange-500 hover:bg-orange-600'"
-                                        class="px-4 py-2 text-white text-xs font-black rounded-full transition-all flex items-center gap-1.5">
-                                        <span class="material-symbols-outlined text-sm"
-                                            x-text="added ? 'check' : 'add_shopping_cart'"></span>
-                                        <span x-text="added ? 'Adicionado!' : 'Adicionar'"></span>
-                                    </button>
+                                    <a href="/orders?service_code={{ $service->id }}&take_order=true"
+                                        class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-xs font-black rounded-full transition-all flex items-center gap-1.5">
+                                        <span class="material-symbols-outlined text-sm">shopping_cart_checkout</span>
+                                        <span>Take order</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -805,19 +802,7 @@
                                 $brand = collect($brandIcons)->first(fn($v, $k) => str_contains($card->name, $k));
                                 $brand = $brand ?? ['abbr' => 'GC', 'from' => 'from-blue-500', 'to' => 'to-blue-400'];
                             @endphp
-                            <div class="flex items-center gap-4 p-4 bg-surface-container-lowest border border-zinc-200 rounded-xl hover:shadow-lg transition-all cursor-pointer group"
-                                x-data="{
-                                    product: {
-                                        id: '{{ $card->id }}',
-                                        name: {{ Js::from($card->name) }},
-                                        platform: 'Gift Card',
-                                        price: {{ $card->price }},
-                                        type: 'giftcard',
-                                        image: null
-                                    },
-                                    added: false
-                                }"
-                                @click="$store.cart.addItem(product); added = true; setTimeout(() => added = false, 1500)">
+                            <a href="/buy-giftcard?service_code={{ $card->id }}" class="flex items-center gap-4 p-4 bg-surface-container-lowest border border-zinc-200 rounded-xl hover:shadow-lg transition-all cursor-pointer group">
                                 <div
                                     class="w-14 h-14 bg-linear-to-br {{ $brand['from'] }} {{ $brand['to'] }} rounded-lg flex items-center justify-center text-white text-xs font-black shrink-0 shadow-lg">
                                     {{ $brand['abbr'] }}
@@ -829,11 +814,11 @@
                                 <div class="flex flex-col items-end gap-1 flex-shrink-0">
                                     <span class="text-sm font-black text-blue-600">MZN
                                         {{ number_format($card->price, 0, ',', '.') }}</span>
-                                    <span class="material-symbols-outlined text-primary transition-all text-lg"
-                                        :class="added ? 'text-green-500 rotate-0' : 'opacity-0 group-hover:opacity-100'"
-                                        x-text="added ? 'check_circle' : 'add_shopping_cart'"></span>
+                                    <span class="material-symbols-outlined text-primary transition-all text-lg opacity-0 group-hover:opacity-100">
+                                        shopping_cart_checkout
+                                    </span>
                                 </div>
-                            </div>
+                            </a>
                         @endforeach
                     </div>
                 @else

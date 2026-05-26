@@ -2,29 +2,29 @@
 
 namespace App\Services;
 
-use Throwable;
-use App\Models\Order;
 use App\Models\Device;
+use App\Models\Order;
 use App\Models\Service;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class OrderService
 {
-    public function handle(Device $device, Service $service): Order | Throwable
+    public function handle(?Device $device, Service $service): Order|Throwable
     {
         $user = user();
         DB::beginTransaction();
         try {
             $transaction = (new WalletManagementService)->debit($user, (int) $service->price);
             $order = $user->orders()->create([
-                'device_id' => $device->id,
+                'device_id' => $device?->id,
                 'transaction_id' => $transaction->id,
                 'service_id' => $service->id,
-                'amount' => $service->price
+                'amount' => $service->price,
             ]);
 
             DB::commit();
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             DB::rollBack();
             throw $th;
         }
@@ -36,7 +36,7 @@ class OrderService
     {
         try {
             $order->markAsAccepted();
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw $th;
         }
     }
@@ -50,7 +50,7 @@ class OrderService
             (new WalletManagementService)->credit($user, $order->amount);
             $order->markAsRejected();
             DB::commit();
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             DB::rollBack();
             throw $th;
         }
@@ -60,7 +60,7 @@ class OrderService
     {
         try {
             $order->markAsDone();
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw $th;
         }
     }
@@ -73,7 +73,7 @@ class OrderService
             (new WalletManagementService)->credit($user, $order->amount);
             $order->markAsCancelled();
             DB::commit();
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             DB::rollBack();
             throw $th;
         }

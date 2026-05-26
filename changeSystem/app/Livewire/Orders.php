@@ -2,9 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Enums\ServiceType;
 use App\Events\OrderPlaced;
 use App\Models\Device;
-use App\Models\Order;
 use App\Models\Service;
 use App\Services\OrderService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -20,26 +20,26 @@ use TallStackUi\Traits\Interactions;
 
 class Orders extends Component
 {
-
-    use WithPagination, Interactions;
+    use Interactions, WithPagination;
 
     public string $search = '';
-    public ?int $quantity = 5;
 
+    public ?int $quantity = 5;
 
     #[Url('service_code')]
     public ?string $serviceId = '';
+
     public ?string $deviceId = null;
+
     #[Url('take_order')]
     public bool $takeorder = false;
-
 
     #[Computed()]
     public function orders(): LengthAwarePaginator
     {
         return user()->orders()
             ->when($search = $this->search, function (Builder $query) use ($search) {
-                return $query->whereHas('device', fn(Builder $subQuery) => $subQuery->whereLike('imei', '%' . $search . '%'));
+                return $query->whereHas('device', fn (Builder $subQuery) => $subQuery->whereLike('imei', '%'.$search.'%'));
             })
             ->orderByDesc('created_at')
             ->paginate($this->quantity);
@@ -49,7 +49,7 @@ class Orders extends Component
     public function services(): array
     {
         return Service::query()->repair()->get()
-            ->map(fn($service) => ['label' => $service->name, 'value' => $service->id, 'note' => $service->descriptions])
+            ->map(fn ($service) => ['label' => $service->name, 'value' => $service->id, 'note' => $service->descriptions])
             ->toArray();
     }
 
@@ -57,7 +57,7 @@ class Orders extends Component
     public function devices(): array
     {
         return Device::query()->get()
-            ->map(fn($device) => ['label' => $device->name, 'value' => $device->id, 'note' => $device->imei])
+            ->map(fn ($device) => ['label' => $device->name, 'value' => $device->id, 'note' => $device->imei])
             ->toArray();
     }
 
@@ -71,32 +71,39 @@ class Orders extends Component
     {
         $this->validate([
             'serviceId' => ['required', 'string', 'exists:services,id'],
-            'deviceId' => ['required', 'string', 'exists:devices,id'],
         ]);
 
-        $device = Device::query()->find($this->deviceId);
+        $service = $this->service;
+
+        if ($service->type === ServiceType::Repair) {
+            $this->validate([
+                'deviceId' => ['required', 'string', 'exists:devices,id'],
+            ]);
+        }
+
+        $device = $this->deviceId ? Device::query()->find($this->deviceId) : null;
 
         DB::beginTransaction();
         try {
-            $order = (new OrderService)->handle($device, $this->service);
+            $order = (new OrderService)->handle($device, $service);
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
-            $this->dialog()->error('Error', "Something wan't wrong. Please try again later")->send();
+            $this->dialog()->error('Error', 'Something went wrong. Please try again later')->send();
+
             return;
         }
 
         $this->takeorder = false;
         $this->reset([
             'deviceId',
-            'serviceId'
+            'serviceId',
         ]);
         broadcast(new OrderPlaced($order));
-        $this->dialog()->success('Sucess', 'Your order has been placed')->send();
+        $this->dialog()->success('Success', 'Your order has been placed')->send();
     }
 
-
-    #[Title("My orders")]
+    #[Title('My orders')]
     public function render(): View
     {
         return view('livewire.orders');

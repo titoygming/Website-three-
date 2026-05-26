@@ -17,6 +17,6 @@ enum TransactionType: string
 
     public static function toArray(): array
     {
-        return array_map(fn(self $type) => $type->value, self::cases());
+        return array_map(fn (self $type) => $type->value, self::cases());
     }
 }

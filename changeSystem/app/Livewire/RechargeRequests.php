@@ -10,7 +10,8 @@ use Livewire\Component;
 
 class RechargeRequests extends Component
 {
-    public string $search = "";
+    public string $search = '';
+
     public ?int $quantity = 5;
 
     #[Computed()]

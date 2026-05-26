@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Manager\Services;
+namespace App\Livewire\Manager\Giftcards;
 
 use App\Enums\ServiceType;
 use App\Models\Service;
@@ -43,23 +43,23 @@ class Create extends Component
                 'price' => $this->price,
                 'description' => $this->details,
                 'image_url' => $image,
-                'type' => ServiceType::Repair,
+                'type' => ServiceType::Giftcard,
             ]);
         } catch (\Throwable $th) {
             // throw $th;
-            $this->dialog()->error('Error', 'An error occurred while creating the service. Please try again.');
+            $this->dialog()->error('Error', 'An error occurred while creating the gift card. Please try again.');
 
             return;
         }
 
         $this->reset(['name', 'price', 'details', 'image']);
-        $this->dialog()->success('Success', 'Service created successfully.')->flash()->send();
-        $this->redirectRoute('manager.services.home', navigate: true);
+        $this->dialog()->success('Success', 'Gift card created successfully.')->flash()->send();
+        $this->redirectRoute('manager.giftcards.home', navigate: true);
     }
 
-    #[Title('Create Service')]
+    #[Title('Create Gift Card')]
     public function render(): View
     {
-        return view('livewire.manager.services.create');
+        return view('livewire.manager.giftcards.create');
     }
 }

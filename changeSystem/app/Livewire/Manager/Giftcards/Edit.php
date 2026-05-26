@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Manager\Services;
+namespace App\Livewire\Manager\Giftcards;
 
 use App\Models\Service;
 use Illuminate\View\View;
@@ -25,12 +25,12 @@ class Edit extends Component
 
     public ?string $details = null;
 
-    public function mount(Service $service)
+    public function mount(Service $giftcard)
     {
-        $this->service = $service;
-        $this->name = $service->name;
-        $this->price = $service->price;
-        $this->details = $service->description;
+        $this->service = $giftcard;
+        $this->name = $giftcard->name;
+        $this->price = $giftcard->price;
+        $this->details = $giftcard->description;
     }
 
     public function edit(): void
@@ -46,7 +46,7 @@ class Edit extends Component
         ]);
 
         if (empty($filled) && ! $this->image) {
-            $this->dialog()->info('No Changes', 'No changes were made to the service.')->send();
+            $this->dialog()->info('No Changes', 'No changes were made to the gift card.')->send();
 
             return;
         }
@@ -68,19 +68,18 @@ class Edit extends Component
 
             $this->service->update($filled);
         } catch (\Throwable $th) {
-            // throw $th;
-            $this->dialog()->error('Error', 'An error occurred while updating the service. Please try again.');
+            $this->dialog()->error('Error', 'An error occurred while updating the gift card. Please try again.');
 
             return;
         }
 
-        $this->dialog()->success('Success', 'Service updated successfully.')->flash()->send();
-        $this->redirectRoute('manager.services.home', navigate: true);
+        $this->dialog()->success('Success', 'Gift card updated successfully.')->flash()->send();
+        $this->redirectRoute('manager.giftcards.home', navigate: true);
     }
 
-    #[Title('Edit Service')]
+    #[Title('Edit Gift Card')]
     public function render(): View
     {
-        return view('livewire.manager.services.edit');
+        return view('livewire.manager.giftcards.edit');
     }
 }

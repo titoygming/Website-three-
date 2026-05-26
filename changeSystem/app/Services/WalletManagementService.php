@@ -11,7 +11,7 @@ use Throwable;
 
 class WalletManagementService
 {
-    public function debit(User $user, int $amount): Transaction | Throwable
+    public function debit(User $user, int $amount): Transaction|Throwable
     {
         if ($user->balance < $amount) {
             throw new Exception("Balance isn't enough");
@@ -21,35 +21,35 @@ class WalletManagementService
         try {
             $transaction = $user->transactions()->create([
                 'amount' => -$amount,
-                'type' => TransactionType::DEBIT->value
+                'type' => TransactionType::DEBIT->value,
             ]);
 
             $user->balance = ($user->balance - $amount);
             $user->save();
             DB::commit();
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             DB::rollBack();
-            throw new Exception("Unable to debit debit");
+            throw new Exception('Unable to debit debit');
         }
 
         return $transaction;
     }
 
-    public function credit(User $user, int $amount): Transaction | Throwable
+    public function credit(User $user, int $amount): Transaction|Throwable
     {
         DB::beginTransaction();
         try {
             $transaction = $user->transactions()->create([
                 'amount' => $amount,
-                'type' => TransactionType::CREDIT->value
+                'type' => TransactionType::CREDIT->value,
             ]);
 
             $user->balance = ($user->balance + $amount);
             $user->save();
             DB::commit();
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             DB::rollBack();
-            throw new Exception("Unable to credit account");
+            throw new Exception('Unable to credit account');
         }
 
         return $transaction;

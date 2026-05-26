@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
+use Database\Factories\ManagerFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
-use Laravel\Fortify\TwoFactorAuthenticatable;
 
 class Manager extends Authenticable
 {
-    /** @use HasFactory<\Database\Factories\ManagerFactory> */
+    /** @use HasFactory<ManagerFactory> */
     use HasFactory, HasUlids, Notifiable;
 
     protected $fillable = [
@@ -34,12 +34,13 @@ class Manager extends Authenticable
             'password' => 'hashed',
         ];
     }
+
     public function initials(): string
     {
         return Str::of($this->name)
             ->explode(' ')
             ->take(2)
-            ->map(fn($word) => Str::substr($word, 0, 1))
+            ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 }

@@ -13,24 +13,26 @@ use TallStackUi\Traits\Interactions;
 
 class MyDevices extends Component
 {
-
-    use WithPagination, Interactions;
+    use Interactions, WithPagination;
 
     public string $search = '';
+
     public ?int $quantity = 5;
 
     public bool $newdevice = false;
 
     public string $name = '';
+
     public string $imei = '';
+
     public string $model = '';
 
     #[Computed()]
     public function devices(): LengthAwarePaginator
     {
         return user()->devices()->when($this->search, function ($query) {
-            $query->whereLike('name', '%' . $this->search . '%')
-                ->orWhereLike('imei', '%' . $this->search . '%');
+            $query->whereLike('name', '%'.$this->search.'%')
+                ->orWhereLike('imei', '%'.$this->search.'%');
         })
             ->latest()
             ->orderByDesc('created_at')
@@ -58,6 +60,7 @@ class MyDevices extends Component
         } catch (\Exception $e) {
             DB::rollBack();
             $this->dialog()->error('Error', 'An error occurred while adding the device. Please try again.')->send();
+
             return;
         }
 

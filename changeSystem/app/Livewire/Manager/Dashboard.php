@@ -2,15 +2,14 @@
 
 namespace App\Livewire\Manager;
 
-use App\Models\User;
 use App\Models\Order;
 use App\Models\Service;
-use Livewire\Component;
-use Illuminate\View\View;
 use App\Models\Transaction;
-use Livewire\Attributes\Layout;
+use App\Models\User;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
-
+use Livewire\Attributes\Layout;
+use Livewire\Component;
 
 #[Layout('layouts.manager')]
 class Dashboard extends Component

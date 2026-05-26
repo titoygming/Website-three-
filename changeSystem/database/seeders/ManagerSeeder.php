@@ -13,9 +13,9 @@ class ManagerSeeder extends Seeder
     public function run(): void
     {
         Manager::query()->create([
-            'name'=>'Manager',
-            'email'=>'manager@system.com',
-            'password' => bcrypt('password')
+            'name' => 'Manager',
+            'email' => 'manager@system.com',
+            'password' => bcrypt('password'),
         ]);
     }
 }

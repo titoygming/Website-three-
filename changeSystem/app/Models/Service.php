@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ServiceType;
 use Database\Factories\ServiceFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -18,11 +19,23 @@ class Service extends Model
     protected $fillable = ['name', 'type', 'price', 'description', 'image_url', 'image'];
 
     /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'type' => ServiceType::class,
+        ];
+    }
+
+    /**
      * Scope to filter only repair services.
      */
     public function scopeRepair(Builder $query): Builder
     {
-        return $query->where('type', 'repair');
+        return $query->where('type', ServiceType::Repair);
     }
 
     /**
@@ -30,7 +43,7 @@ class Service extends Model
      */
     public function scopeGiftcard(Builder $query): Builder
     {
-        return $query->where('type', 'giftcard');
+        return $query->where('type', ServiceType::Giftcard);
     }
 
     /**

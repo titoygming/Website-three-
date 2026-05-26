@@ -10,13 +10,11 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-
-
 #[Layout('layouts.manager')]
 class Transactions extends Component
 {
-
     public ?string $search = '';
+
     public ?int $quantity = 5;
 
     #[Computed()]
